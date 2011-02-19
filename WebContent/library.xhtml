@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j">
+
+<ui:composition template="/template3.xhtml">
+	<ui:define name="title">
+		library		
+	</ui:define>
+	<ui:define name="content">
+		<h:form id="mylibraryform">
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="My Library Form" />
+				</f:facet>
+
+				<h:message for="mylibraryform" errorClass="error" showSummary="true" />
+				<br />
+				<rich:datascroller align="left" for="librarytable" maxPages="10" />
+				<rich:dataTable id="librarytable" value="#{mainbean.bookBeans}" var="book"
+					headerClass="dataTableHeader" styleClass="dataTable"
+					rowClasses="dataTableOddRow,dataTableEvenRow"
+					cellspacing="5" cellpadding="5" rows="10"  sortMode="single">
+					<rich:column id="markedfordeletion">
+						<f:facet name="header">
+							<h:outputText value="#{msgs.delete}" />
+						</f:facet>
+						<h:selectBooleanCheckbox value="#{book.markedForDeletion}">
+							<a4j:support event="onclick" reRender="mainButtons" />
+						</h:selectBooleanCheckbox>
+					</rich:column>
+					<rich:column id="title" sortBy="#{book.title}" sortOrder="ASCENDING">
+						<f:facet name="header">
+							<h:outputText value="#{msgs.title}" />
+						</f:facet>
+						<h:commandLink value="#{book.title}" action="#{mainbean.edit}" />
+					</rich:column>
+					<rich:column id="author">
+						<f:facet name="header">
+							<h:outputText value="#{msgs.author}" />
+						</f:facet>
+						<h:outputText value="#{book.authorName}" />
+					</rich:column>
+				</rich:dataTable>
+				<br />
+				<h:panelGrid id="mainButtons" columns="2">
+					<h:commandButton id="deleteBooksButton" value="#{msgs.deletebooks}"
+						action="#{mainbean.deleteBooks}"
+						rendered="#{mainbean.haveBooksToDelete}" />
+					<h:commandButton value="#{msgs.addBookToLibrary}"
+						action="addbooktolibrary" />
+				</h:panelGrid>
+			</rich:panel>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

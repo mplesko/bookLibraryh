@@ -1,0 +1,31 @@
+<!-- Use this file to deploy some handlers/chains and services      -->
+<!-- Two ways to do this:                                           -->
+<!--   java org.apache.axis.client.AdminClient deploy.wsdd          -->
+<!--      after the axis server is running                          -->
+<!-- or                                                             -->
+<!--   java org.apache.axis.utils.Admin client|server deploy.wsdd   -->
+<!--      from the same directory that the Axis engine runs         -->
+
+<deployment
+    xmlns="http://xml.apache.org/axis/wsdd/"
+    xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
+
+  <!-- Services from BookLibraryServiceImplService WSDL service -->
+
+  <service name="BookLibraryServiceImpl" provider="java:RPC" style="wrapped" use="literal">
+      <parameter name="wsdlTargetNamespace" value="http://service.booklibrary.logansrings.com"/>
+      <parameter name="wsdlServiceElement" value="BookLibraryServiceImplService"/>
+      <parameter name="schemaQualified" value="http://service.booklibrary.logansrings.com"/>
+      <parameter name="wsdlServicePort" value="BookLibraryServiceImpl"/>
+      <parameter name="className" value="com.logansrings.booklibrary.service.BookLibraryServiceImplSoapBindingImpl"/>
+      <parameter name="wsdlPortType" value="BookLibraryServiceImpl"/>
+      <parameter name="typeMappingVersion" value="1.2"/>
+      <operation name="getBookCount" qname="operNS:getBookCount" xmlns:operNS="http://service.booklibrary.logansrings.com" returnQName="retNS:getBookCountReturn" xmlns:retNS="http://service.booklibrary.logansrings.com" returnType="rtns:int" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="" >
+      </operation>
+      <operation name="getAuthorBookCount" qname="operNS:getAuthorBookCount" xmlns:operNS="http://service.booklibrary.logansrings.com" returnQName="retNS:getAuthorBookCountReturn" xmlns:retNS="http://service.booklibrary.logansrings.com" returnType="rtns:int" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="" >
+        <parameter qname="pns:authorName" xmlns:pns="http://service.booklibrary.logansrings.com" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <parameter name="allowedMethods" value="getAuthorBookCount getBookCount"/>
+
+  </service>
+</deployment>

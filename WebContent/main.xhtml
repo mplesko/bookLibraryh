@@ -1,0 +1,20 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j">
+	
+<ui:composition template="/template3.xhtml">
+	<ui:define name="title">
+		main
+	</ui:define>
+	<ui:define name="content">
+	<h:form id="mainForm">
+		
+		<h:message for="mainForm" errorClass="error" showSummary="true" />
+	</h:form>
+	</ui:define>
+</ui:composition>
+</html>

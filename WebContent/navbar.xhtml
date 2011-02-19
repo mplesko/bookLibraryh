@@ -1,0 +1,31 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j">
+
+<h:form>
+<rich:panelMenu  mode="ajax" iconExpandedGroup="disc"
+	iconCollapsedGroup="disc" iconExpandedTopGroup="chevronUp"
+	iconGroupTopPosition="right" iconCollapsedTopGroup="chevronDown">
+	<rich:panelMenuGroup label="Group 1">
+		<rich:panelMenuItem label="Item 1.1" action="#{mainbean.logout}">
+			<f:param name="current" value="Item 1.1" />
+		</rich:panelMenuItem>
+		<rich:panelMenuItem label="Item 1.2" action="#{mainbean.logout}">
+			<f:param name="current" value="Item 1.1" />
+		</rich:panelMenuItem>
+	</rich:panelMenuGroup>
+	<rich:panelMenuGroup label="Group 2">
+		<rich:panelMenuItem label="Item 2.1" action="#{mainbean.logout}">
+			<f:param name="current" value="Item 1.1" />
+		</rich:panelMenuItem>
+		<rich:panelMenuItem label="Item 2.2" action="#{mainbean.logout}">
+			<f:param name="current" value="Item 1.1" />
+		</rich:panelMenuItem>
+	</rich:panelMenuGroup>
+</rich:panelMenu>
+</h:form>
+</html>

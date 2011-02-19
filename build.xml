@@ -1,0 +1,61 @@
+<project name="booklibrary" default="war">
+	<!-- ========== Project Settings ========== -->
+	<property environment="env" />
+	<property name="HOME_DIR" value="./" />
+	<property name="BUILD_DIR" value="${HOME_DIR}/antBuild" />
+	<property name="RELEASE_DIR" value="${HOME_DIR}/release" />
+	<property name="CONTENT_DIR" value="${HOME_DIR}/WebContent" />
+	<path id="class.path">
+		<fileset dir="${CONTENT_DIR}/WEB-INF/lib">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+	<!-- ========== Clean ========== -->
+	<target name="clean">
+		<delete dir="${BUILD_DIR}" />
+		<delete dir="${RELEASE_DIR}" />
+	</target>
+	<!-- ========== Init System ========== -->
+	<target name="init" depends="clean">
+		<tstamp>
+			<format property="now" pattern="MMM d yyyy hh:mm aa" />
+		</tstamp>
+		<!-- Create build dir -->
+		<mkdir dir="${BUILD_DIR}" />
+		<mkdir dir="${BUILD_DIR}/classes" />
+		<mkdir dir="${RELEASE_DIR}" />
+	</target>
+	<!-- ========== Compile Java Code ========== -->
+	<target name="compile" depends="init">
+		<javac debug="on" classpathref="class.path" debuglevel="lines,vars,source"
+			optimize="on" destdir="${BUILD_DIR}/classes">
+			<src path="${HOME_DIR}/src" />
+		</javac>
+	</target>
+	<!-- ========== Copy Non-Java Resources ========== -->
+	<target name="copy" depends="compile">
+		<copy todir="${BUILD_DIR}/classes">
+			<fileset dir="${HOME_DIR}/src">
+				<include name="*.properties" />
+			</fileset>
+		</copy>
+	</target>
+	<!-- ========== Jar Process ========== -->
+	<target name="jar" depends="copy">
+		<jar destfile="${RELEASE_DIR}/booklibrary.jar" basedir="${BUILD_DIR}/classes"
+			includes="**/*.*">
+		</jar>
+	</target>
+	<!-- ========== War Process ========== -->
+	<target name="war" depends="jar">
+		<war destfile="${RELEASE_DIR}/booklibrary.war" webxml="${HOME_DIR}/WebContent/WEB-INF/web.xml">
+			<fileset dir="${CONTENT_DIR}">
+				<exclude name="META-INF" />
+			</fileset>
+			<lib dir="${RELEASE_DIR}">
+				<include name="*.jar" />
+			</lib>
+		</war>
+		<copy file="${RELEASE_DIR}/booklibrary.war" todir="${env.CATALINA_HOME}/webapps" />
+	</target>
+</project>

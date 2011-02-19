@@ -1,0 +1,58 @@
+body {
+  margin: 0px;
+  padding: 0px;
+}
+
+#header {
+  background: #DDDDDD;
+  width: 100%;  
+}
+
+#toolBar {
+  background: #DDDDDD;
+	  width: 100%;
+}
+
+#leftBar {
+  background: #EBEBEB;
+  width: 20%;
+  height: 500px;
+  float: left; 
+}
+
+#content {
+  background: #cdcde6;
+  width: 80%;
+  height: 500px;
+  float: right;
+}
+
+.error{
+  font-style: italic;
+  background: #FFC;
+  border-color: #F00;
+  color: red;
+}
+
+.toolBarGroup{
+  color: white;
+}
+
+xbody {
+	background-color: #e6ffff;
+	border-style: ridge;
+	border-width: medium;
+}
+
+h1 {
+	color: blue;
+}
+	
+h2 {
+	color: green;
+	font-family: verdana;
+}
+
+hr {
+	color: maroon;
+}

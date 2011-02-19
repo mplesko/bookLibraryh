@@ -1,0 +1,33 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:rich="http://richfaces.org/rich">
+
+<ui:composition template="/template3.xhtml">
+	<ui:define name="title">
+		addbook
+	</ui:define>
+	<ui:define name="content">
+		<h:form id="addbooktolibraryForm">
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="Add Book To Library Form" />
+				</f:facet>
+				<h:message for="addbooktolibraryForm" errorClass="error" showSummary="true" />
+
+				<h:panelGrid columns="2">
+					<h:outputText value="#{msgs.book}"/>
+					<h:selectOneMenu value="#{mainbean.addBookId}" id="addBookId">
+						<f:selectItems value="#{bookbean.sortedSelectBooks}" />
+					</h:selectOneMenu>
+					<h:outputText />
+					<h:commandButton value="#{msgs.addBook}"
+						action="#{mainbean.addBookToLibrary}" />
+				</h:panelGrid>
+			</rich:panel>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

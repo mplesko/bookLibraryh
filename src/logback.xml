@@ -1,0 +1,44 @@
+<configuration>
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<layout class="ch.qos.logback.classic.PatternLayout">
+				<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
+				</pattern>
+			</layout>
+		</encoder>
+	</appender>
+	<appender name="DOMAIN_APPENDER" class="ch.qos.logback.core.FileAppender">
+		<file>c:/logs/logback_domain.log</file>
+		<encoder>
+			<layout class="ch.qos.logback.classic.PatternLayout">
+				<pattern>%date %level [%thread] %logger{10} [%file:%line] %msg%n
+				</pattern>
+			</layout>
+		</encoder>
+	</appender>
+	<appender name="TECHNICAL_APPENDER" class="ch.qos.logback.core.FileAppender">
+		<file>c:/logs/logback_technical.log</file>
+		<encoder>
+			<layout class="ch.qos.logback.classic.PatternLayout">
+				<pattern>%date %level [%thread] %logger{10} [%file:%line] %msg%n
+				</pattern>
+			</layout>
+		</encoder>
+	</appender>
+
+	<logger name="DOMAIN" level="DEBUG" additivity="false">
+		<appender-ref ref="DOMAIN_APPENDER" />
+	</logger>
+	
+	<logger name="TECHNICAL" level="DEBUG" additivity="false">
+		<appender-ref ref="TECHNICAL_APPENDER" />
+	</logger>
+	
+	<root level="debug">
+		<appender-ref ref="STDOUT" />
+	</root>
+</configuration>
+<!-- 
+ 
+-->
+

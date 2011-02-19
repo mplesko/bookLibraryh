@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j">
+<head>
+<link rel="stylesheet" type="text/css" href="./css/styles.css" />
+</head>
+<ui:composition template="/template3.xhtml">
+	<ui:define name="title">
+		author list		
+	</ui:define>
+	<ui:define name="content">
+		<h:form id="booklistForm">
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="Book List Form" />
+				</f:facet>
+				<h:message for="booklistForm" errorClass="error"
+					showSummary="true" />
+				<rich:datascroller align="left" for="bookTable" maxPages="10" />
+				<rich:dataTable id="bookTable" value="#{bookbean.books}" var="book"
+					headerClass="dataTableHeader" styleClass="dataTable"
+					rowClasses="dataTableOddRow,dataTableEvenRow"
+					cellspacing="5" cellpadding="5" rows="10" sortMode="single">
+					<rich:column id="title" sortBy="#{book.title}" sortOrder="ASCENDING">
+						<f:facet name="header">
+							<h:outputText value="#{msgs.title}" />
+						</f:facet>
+						<h:outputText value="#{book.title}" />
+					</rich:column>
+					<rich:column id="firstname">
+						<f:facet name="header">
+							<h:outputText value="#{msgs.authorFirstName}" />
+						</f:facet>
+						<h:outputText value="#{book.authorFirstName}" />
+					</rich:column>
+					<rich:column id="lastname">
+						<f:facet name="header">
+							<h:outputText value="#{msgs.authorLastName}" />
+						</f:facet>
+						<h:outputText value="#{book.authorLastName}" />
+					</rich:column>
+				</rich:dataTable>
+			</rich:panel>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

@@ -1,0 +1,57 @@
+--select *  
+--delete from author where firstName like 'first%'
+--delete from book where title like 'x%'
+--delete from user where userName in ('a','b','x','y','z')
+--delete  from userbook where bookId < 3
+CREATE TABLE booklibrary.user (
+         id BIGINT(13),
+         userName CHAR(20),
+         password CHAR(41)
+       );
+       
+CREATE TABLE booklibrary.book (
+         id BIGINT(13),
+         title CHAR(200),
+         authorId BIGINT(13)
+       ); 
+       
+CREATE TABLE booklibrary.author (
+         id BIGINT(13),
+         firstName CHAR(80),
+         lastName CHAR(80)
+       ); 
+       
+CREATE TABLE booklibrary.userbook (
+         userId BIGINT(13),
+         bookId BIGINT(13)
+       );
+       
+INSERT into booklibrary.author
+values  (1, 'firstName1', 'lastName1' );
+
+INSERT into booklibrary.author
+values  (2, 'firstName2', 'lastName2' );
+
+INSERT into booklibrary.book
+values  (1, 'title1', 1 );
+
+INSERT into booklibrary.book
+values  (2, 'title2', 2 );
+
+INSERT into booklibrary.userbook
+values  (1268095263969, 1 );
+
+INSERT into booklibrary.userbook
+values  (1268095263969, 2 );
+
+select book.*, author.*  
+from userbook, book, author
+where userbook.userId = 1268095263969
+and userbook.bookId = book.id
+and book.authorId = author.id
+
+select book.title, author.firstName, author.lastName
+from userbook, book, author
+where userbook.userId = 1268095263969
+and userbook.bookId = book.id
+and book.authorId = author.id

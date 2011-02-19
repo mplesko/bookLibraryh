@@ -1,0 +1,29 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j">
+
+<h:form>
+<rich:toolBar id="toolBar" height="40" itemSeparator="line" styleClass="toolBar">
+	<rich:toolBarGroup>
+		<h:commandLink id="#{msgs.login}" value="#{msgs.login}" action="login" rendered="#{userbean.notLoggedIn}"/>
+		<h:commandLink value="#{msgs.logout}" action="#{mainbean.logout}" rendered="#{userbean.loggedIn}"/>
+	</rich:toolBarGroup>
+	<rich:toolBarGroup>
+		<h:commandLink value="#{msgs.myLibrary}" action="library" rendered="#{userbean.loggedIn}"/>
+	</rich:toolBarGroup>
+	<rich:toolBarGroup itemSeparator="disc">
+		<h:commandLink id="#{msgs.authors}" value="#{msgs.authors}" action="authorlist" />
+		<h:commandLink id="#{msgs.books}" value="#{msgs.books}" action="booklist" />
+	</rich:toolBarGroup>
+	<rich:toolBarGroup itemSeparator="disc">
+		<h:commandLink value="#{msgs.addAuthors}" action="addauthors" />
+		<h:commandLink value="#{msgs.addBooks}" action="addbooks" />
+	</rich:toolBarGroup>
+</rich:toolBar>
+</h:form>
+
+</html>

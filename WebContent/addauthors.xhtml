@@ -1,0 +1,37 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:rich="http://richfaces.org/rich">
+
+<ui:composition template="/template3.xhtml">
+	<ui:define name="title">
+		addauthors
+	</ui:define>
+	<ui:define name="content">
+		<h:form id="addAuthorsForm">
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="Add Authors Form" />
+				</f:facet>
+				<h:message for="addAuthorsForm" errorClass="error" showSummary="true" />
+
+				<h:panelGrid columns="3">
+					<h:outputText value="#{msgs.authorFirstName}" />
+					<h:inputText id="firstName"
+						value="#{authorbean.firstName}" required="true" />
+					<h:message for="firstName" errorClass="error" />
+					<h:outputText value="#{msgs.authorLastName}" />
+					<h:inputText id="lastName"
+						value="#{authorbean.lastName}" required="true" />
+					<h:message for="lastName" errorClass="error" />
+					<h:outputText value="" />
+					<h:commandButton value="#{msgs.add}"
+						action="#{authorbean.addAuthor}" />
+				</h:panelGrid>
+			</rich:panel>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>
