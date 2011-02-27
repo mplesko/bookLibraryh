@@ -20,7 +20,6 @@ public class Book implements Persistable{
 	private Long authorId;
 	private boolean valid;
 	private String context = "";
-	private static PersistenceDelegate persistenceDelegate = null;
 
 	public static void main(String[] args) throws ServletException {
 //		Book book = new Book("Mythical Man Month", Author.getTestAuthor());
@@ -131,16 +130,8 @@ public class Book implements Persistable{
 		return "book";
 	}
 
-	static void setPersistenceDelegate(PersistenceDelegate persistenceDelegate) {
-		Book.persistenceDelegate = persistenceDelegate;
-	}
-
 	static private PersistenceDelegate getPersistenceDelegate() {
-		if (persistenceDelegate == null) {
-			return ApplicationContext.getPersistenceDelegate();
-		} else {
-			return persistenceDelegate;
-		}		
+		return ApplicationContext.getPersistenceDelegate();
 	}
 
 	String getTitle() {

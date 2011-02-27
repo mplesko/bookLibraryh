@@ -10,10 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.servlet.ServletException;
-
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.envers.reader.FirstLevelCache;
-
 import com.logansrings.booklibrary.app.ApplicationContext;
 import com.logansrings.booklibrary.app.ApplicationUtilities;
 import com.logansrings.booklibrary.persistence.Persistable;
@@ -22,7 +19,6 @@ import com.logansrings.booklibrary.persistence.PersistenceDelegate;
 @Entity
 @Table( name = "author" )
 public class Author implements Persistable {
-
 	@Id
 	@Column(name = "id")
 	@GeneratedValue(generator="increment")
@@ -40,7 +36,7 @@ public class Author implements Persistable {
 	@Transient
 	private String context = "";
 	@Transient
-	private static PersistenceDelegate persistenceDelegate = null;
+	private static final String UNINITIALIZED = "must have firstName and lastName";
 	
 	public static void main(String[] args) throws ServletException {
 		new ApplicationContext().init();
@@ -53,7 +49,7 @@ public class Author implements Persistable {
 	
 	Author() {
 		valid = false;
-		context = "must have firstName and lastName";
+		context = UNINITIALIZED;
 	}
 	
 	public Author(String firstName, String lastName) {
@@ -61,7 +57,7 @@ public class Author implements Persistable {
 		this.lastName = lastName;
 		if (ApplicationUtilities.isEmpty(firstName, lastName)) {
 			valid = false;
-			context = "must have firstName and lastName";
+			context = UNINITIALIZED;
 		} else {
 			findByName();
 			if (isNotValid()) {
@@ -159,16 +155,8 @@ public class Author implements Persistable {
 		return ! isValid();
 	}
 
-	static void setPersistenceDelegate(PersistenceDelegate persistenceDelegate) {
-		Author.persistenceDelegate = persistenceDelegate;
-	}
-	
 	static private PersistenceDelegate getPersistenceDelegate() {
-		if (persistenceDelegate == null) {
-			return ApplicationContext.getPersistenceDelegate();
-		} else {
-			return persistenceDelegate;
-		}		
+		return ApplicationContext.getPersistenceDelegate();
 	}
 
 	public Long getId() {
@@ -184,16 +172,12 @@ public class Author implements Persistable {
 
 	public static List<Author> getAll() {
 		List<Author> authors = new ArrayList<Author>();
-		List<List<Object>> findList = getPersistenceDelegate().findAll(new Author());
+		List<Persistable> findList = getPersistenceDelegate().findAll(new Author());
 		if (findList.size() == 0) {
 			// nothing to do
 		} else {
-			for (List<Object> objectList : findList) {
-				Author author = new Author();
-				author.id = (Long) objectList.get(0);
-				author.firstName = (String) objectList.get(1);
-				author.lastName = (String) objectList.get(2);
-				authors.add(author);
+			for (Persistable persistable : findList) {
+				authors.add((Author)persistable);
 			}
 		}
 		return authors;
@@ -213,6 +197,4 @@ public class Author implements Persistable {
 	public void setId(Long id) {
 		this.id = id;		
 	}
-
-
 }

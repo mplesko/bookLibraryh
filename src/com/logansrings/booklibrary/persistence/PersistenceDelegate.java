@@ -12,37 +12,29 @@ public interface PersistenceDelegate {
 	
 	/**
 	 * @param persistable
-	 * @return a list of objects that are the column values of the peristable
-	 * or an empty list if none found.
-	 */
-//	List<Object> findOne(Persistable persistable);
-
-	/**
-	 * @param persistable
-	 * @return a persistable that's a match for the persistable argument 
+	 * @return the persistable that matches the persistable argument's id 
 	 * or null if not found.
 	 */
 	Persistable findById(Persistable persistable);
 	
 	/**
 	 * @param persistable
-	 * @return a persistable that's a match for the persistable argument 
+	 * @return the persistable that matches the persistable argument's values 
 	 * or null if not found.
 	 */
 	Persistable findOne(Persistable persistable);
 	
 	/**
 	 * @param persistable
-	 * @return a list of objects that are the column values of any peristable
-	 * matching the persistable's values as filters, or an empty list if none found.
+	 * @return a list of persistables that match the persistable argument's values
+	 * or an empty list if none found.
 	 */
-	List<List<Object>> findAny(Persistable persistable);
+	List<Persistable> findAny(Persistable persistable);
 	
 	/**
 	 * @param persistable
-	 * @return a list of objects that are the column values of any object 
-	 * for the peristable's table.
+	 * @return all the object in the persistable argument's table
 	 */
-	List<List<Object>> findAll(Persistable persistable);
+	List<Persistable> findAll(Persistable persistable);
 
 }

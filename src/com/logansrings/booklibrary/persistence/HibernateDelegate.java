@@ -1,35 +1,50 @@
 package com.logansrings.booklibrary.persistence;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.criterion.Example;
 
-import com.logansrings.booklibrary.app.ApplicationProperties;
-import com.logansrings.booklibrary.app.ApplicationUtilities;
-import com.logansrings.booklibrary.domain.User;
+import com.logansrings.booklibrary.domain.Author;
 import com.logansrings.booklibrary.notification.Notification;
 import com.logansrings.booklibrary.notification.Severity;
 import com.logansrings.booklibrary.notification.Type;
 
 /**
- * Wraps a Hibernate implmenation of persistence
+ * Wraps a Hibernate implementation of persistence
  */
 public class HibernateDelegate implements PersistenceDelegate {
-	
 	private static SessionFactory sessionFactory = getSessionFactory();
-	private static Connection connection = null;
 
 	public static void main(String[] args) {
-		User user = User.getTestUser();
-		new HibernateDelegate().findOne(user);
+		Author author = Author.getTestAuthor();
+		HibernateDelegate hibernateDelegate = new HibernateDelegate();
+		
+		hibernateDelegate.findById(author);
+		hibernateDelegate.findOne(author);
+		hibernateDelegate.findAny(author);
+		hibernateDelegate.findAll(author);
+		hibernateDelegate.exists(author);
+		hibernateDelegate.delete(author);
+		
+		hibernateDelegate.persist(author);
+		
+		hibernateDelegate.findById(author);
+		hibernateDelegate.findOne(author);
+		hibernateDelegate.findAny(author);
+		hibernateDelegate.findAll(author);
+		hibernateDelegate.exists(author);
+		
+		hibernateDelegate.delete(author);
+		
+		hibernateDelegate.findById(author);
+		hibernateDelegate.findOne(author);
+
 	}
 
 	public boolean persist(Persistable persistable) {
@@ -39,7 +54,6 @@ public class HibernateDelegate implements PersistenceDelegate {
 			session.save(persistable);
 			session.getTransaction().commit();
 			session.close();
-
 			Notification.newNotification(
 					this, "HibernateDelegate.persist()", 
 					persistable.getTableName() + " " + 
@@ -57,24 +71,29 @@ public class HibernateDelegate implements PersistenceDelegate {
 		} 
 	}
 
+	public Persistable findById(Persistable persistable) {
+		try {
+			Session session = getSession();
+//			session.beginTransaction();
+			return (Persistable)session.load(
+					persistable.getClass(), persistable.getId());
+		} catch (HibernateException e) {
+			Notification.newNotification(
+					this, "HibernateDelegate.findById()", 
+					persistable.toString() + " failed", e.getMessage(), 
+					Type.TECHNICAL, Severity.ERROR);   
+			return null;
+		}
+	}
+	
 	public boolean exists(Persistable persistable) {
 		boolean found = false;
 		try {
-			Connection conn = getConnection();
-			try {
-				ResultSet resultSet = conn.createStatement().executeQuery(
-						buildSelectSql(persistable, true));
-				int resultCount = 0;
-				if (resultSet.last()) {
-					resultCount = resultSet.getRow();
-				}
-				if (resultCount > 0) {
-					found = true;
-				}
-			} finally {
-				conn.close();
+			List<Persistable> list = findQBE(persistable);
+			if (! list.isEmpty()) {
+				found = true;
 			}
-		} catch (Exception e) {
+		} catch (HibernateException e) {
 			Notification.newNotification(
 					this, "HibernateDelegate.exists()", 
 					persistable.toString() + " failed", e.getMessage(), 
@@ -83,35 +102,9 @@ public class HibernateDelegate implements PersistenceDelegate {
 		return found;
 	}
 
-	public Persistable findById(Persistable persistable) {
-		try {
-			Session session = getSession();
-			session.beginTransaction();
-			return (Persistable)session.load(
-					persistable.getClass(), persistable.getId());
-//			Persistable found =
-//				(Persistable)session.load(
-//						persistable.getClass(), persistable.getId());
-			
-		} catch (HibernateException e) {
-			e.printStackTrace();
-			Notification.newNotification(
-					this, "HibernateDelegate.findById()", 
-					persistable.toString() + " failed", e.getMessage(), 
-					Type.TECHNICAL, Severity.ERROR);   
-			return null;
-		}
-
-	}
-	
 	public Persistable findOne(Persistable persistable) {
 		try {
-//			List<Persistable> list = new ArrayList<Persistable>();
-			Session session = getSession();
-			session.beginTransaction();
-			List<Persistable> list = session.createSQLQuery(
-					buildSelectSql(persistable, true)).
-					addEntity(persistable.getClass()).list();
+			List<Persistable> list = findQBE(persistable);
 			if (list.isEmpty()) {
 				Notification.newNotification(
 						this, "HibernateDelegate.findOne()", 
@@ -125,7 +118,6 @@ public class HibernateDelegate implements PersistenceDelegate {
 						"result size = " + list.size(), 
 						Type.TECHNICAL, Severity.ERROR);   
 			}
-			session.close();
 			return list.get(0);
 		} catch (HibernateException e) {
 			Notification.newNotification(
@@ -136,91 +128,58 @@ public class HibernateDelegate implements PersistenceDelegate {
 		}
 	}
 
-	public List<List<Object>> findAny(Persistable persistable) {
-		List<List<Object>> returnList = new ArrayList<List<Object>>();
+	public List<Persistable> findAny(Persistable persistable) {
 		try {
-			Connection conn = getConnection();
-			try {
-				ResultSet resultSet = conn.createStatement().executeQuery(
-						buildSelectSql(persistable, true));
-				int resultCount = 0;
-				if (resultSet.last()) {
-					resultCount = resultSet.getRow();
-				}
-				if (resultCount == 0) {
-					// nothing found						
-				} else {
-					for (int i = 1; i <= resultCount; i++) {
-						List<Object> objectList = new ArrayList<Object>();
-						resultSet.absolute(i);
-						for (int j = 1; j <= persistable.getColumnCount(); j++) {
-							objectList.add(resultSet.getObject(j));
-						}
-						returnList.add(objectList);
-					}
-				}
-			} finally {
-				conn.close();
-			}
+			List<Persistable> list = findQBE(persistable);
+			return list;
 		} catch (Exception e) {
 			Notification.newNotification(
 					this, "HibernateDelegate.findAny()", 
 					persistable.toString() + " failed", e.getMessage(), 
-					Type.TECHNICAL, Severity.ERROR);   
+					Type.TECHNICAL, Severity.ERROR);
+			return Collections.EMPTY_LIST;
 		}
-		return returnList;
 	}
 
-	public List<List<Object>> findAll(Persistable persistable) {
+	private List<Persistable> findQBE(Persistable persistable) throws HibernateException {
+			Session session = getSession();
+			session.beginTransaction();
+			List list = session.createCriteria(persistable.getClass())
+				.add( Example.create(persistable))
+				.list();
+			session.close();
+			return list;
+	}
+
+	public List<Persistable> findAll(Persistable persistable) {
 		List<List<Object>> returnList = new ArrayList<List<Object>>();
 		try {
-			Connection conn = getConnection();
-			try {
-				ResultSet resultSet = conn.createStatement().executeQuery(
-						buildSelectSql(persistable, false));
-				int resultCount = 0;
-				if (resultSet.last()) {
-					resultCount = resultSet.getRow();
-				}
-				if (resultCount == 0) {
-					// nothing found						
-				} else {
-					for (int i = 1; i <= resultCount; i++) {
-						List<Object> objectList = new ArrayList<Object>();
-						resultSet.absolute(i);
-						for (int j = 1; j <= persistable.getColumnCount(); j++) {
-							objectList.add(resultSet.getObject(j));
-						}
-						returnList.add(objectList);
-					}
-				}
-			} finally {
-				conn.close();
-			}
+			Session session = getSession();
+			String q = "from " + persistable.getClass().getName();
+			List list = session.createQuery(q).list();	
+			session.close();
+			return list;
 		} catch (Exception e) {
 			Notification.newNotification(
 					this, "HibernateDelegate.findAll()", 
 					persistable.toString() + " failed", e.getMessage(), 
 					Type.TECHNICAL, Severity.ERROR);   
+			return Collections.EMPTY_LIST;
 		}
-		return returnList;
 	}
 
 	public boolean delete(Persistable persistable) {
 		try {
-			Connection conn = getConnection();
-			try {
-				conn.createStatement().executeUpdate(buildDeleteSql(persistable));
-				Notification.newNotification(
-						this, "HibernateDelegate.delete()", 
-						persistable.getTableName() + " " + 
-						persistable.toString() + " successful", "", 
-						Type.DOMAIN, Severity.INFO);   
-				return true;
-
-			} finally {
-				conn.close();
-			}
+			Session session = getSession();
+			Persistable toDelete = (Persistable)session.load(
+					persistable.getClass(), persistable.getId());
+			session.delete(toDelete);
+			Notification.newNotification(
+					this, "HibernateDelegate.delete()", 
+					persistable.getTableName() + " " + 
+					persistable.toString() + " successful", "", 
+					Type.DOMAIN, Severity.INFO);   
+			return true;
 		} catch (Exception e) {
 			Notification.newNotification(
 					this, "HibernateDelegate.delete()", 
@@ -228,80 +187,6 @@ public class HibernateDelegate implements PersistenceDelegate {
 					Type.TECHNICAL, Severity.ERROR);   
 			return false;
 		} 
-	}
-
-	private Connection getConnection() throws SQLException,
-	InstantiationException, IllegalAccessException,
-	ClassNotFoundException {
-		if (connection == null) {
-			// TODO move to properties
-			Class.forName("com.mysql.jdbc.Driver").newInstance();
-			return DriverManager.getConnection(ApplicationProperties
-					.getDatabaseURL(),
-					ApplicationProperties.getDatabaseLogin(),
-					ApplicationProperties.getDatabasePassword());
-		} else {
-			return connection;
-		}
-	}
-
-	private String buildInsertSql(Persistable persistable) {
-		StringBuilder stringBuilder = new StringBuilder();
-		stringBuilder
-		.append("INSERT INTO ")
-		.append(persistable.getTableName())
-		.append(" VALUES (")
-		.append(ApplicationUtilities.arrayToFormattedCommaSeparatedString(
-				persistable.getColumnValues()))
-				.append(")");
-		System.out.println(stringBuilder.toString());
-		return stringBuilder.toString();
-	}
-
-	private String buildDeleteSql(Persistable persistable) {
-		StringBuilder stringBuilder = new StringBuilder();
-		stringBuilder
-		.append("DELETE FROM ")
-		.append(persistable.getTableName())
-//		.append(" WHERE ")
-		.append(buildWhereClause(persistable));
-
-		System.out.println(stringBuilder.toString());
-		return stringBuilder.toString();
-	}
-	
-	private String buildSelectSql(
-			Persistable persistable, boolean includeWhereClause) {
-		
-		StringBuilder stringBuilder = new StringBuilder();
-		stringBuilder
-		.append("SELECT * FROM ")
-		.append(persistable.getTableName());
-		if (includeWhereClause) {
-			stringBuilder.append(buildWhereClause(persistable));
-		}
-		System.out.println(stringBuilder.toString());
-		return stringBuilder.toString();
-	}
-
-	private String buildWhereClause(Persistable persistable) {
-		StringBuilder stringBuilder = new StringBuilder();
-		stringBuilder.append(" WHERE ");
-		int columnCount = persistable.getColumnNames().length;
-		for (int i = 0; i < columnCount; i++) {
-			if (i > 0) {
-				stringBuilder.append(" AND ");
-			}
-			stringBuilder.append(persistable.getColumnNames()[i]);
-			stringBuilder.append(" = ");
-			if (persistable.getColumnValues()[i] instanceof String) {
-				stringBuilder.append(
-						"'" + persistable.getColumnValues()[i] + "'");
-			} else {
-				stringBuilder.append(persistable.getColumnValues()[i]);
-			}
-		}
-		return stringBuilder.toString();
 	}
 
 	private static SessionFactory getSessionFactory() {

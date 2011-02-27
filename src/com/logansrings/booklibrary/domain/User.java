@@ -24,7 +24,6 @@ public class User implements Persistable {
 	private boolean valid;
 	private String context = "";
 	private static Encrypting encrypting = null;
-	private static PersistenceDelegate persistenceDelegate = null;
 
 	public static void main(String[] args) throws ServletException {
 		System.out.println(User.getTestUser().toString());
@@ -197,16 +196,8 @@ public class User implements Persistable {
 		}
 	}
 
-	static void setPersistenceDelegate(PersistenceDelegate persistenceDelegate) {
-		User.persistenceDelegate = persistenceDelegate;
-	}
-
 	static private PersistenceDelegate getPersistenceDelegate() {
-		if (persistenceDelegate == null) {
-			return ApplicationContext.getPersistenceDelegate();
-		} else {
-			return persistenceDelegate;
-		}		
+		return ApplicationContext.getPersistenceDelegate();
 	}
 
 	@Override

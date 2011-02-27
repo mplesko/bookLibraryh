@@ -46,4 +46,10 @@ public class PersistenceMock implements PersistenceDelegate {
 		return null;
 	}
 
+	@Override
+	public Persistable findById(Persistable persistable) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

@@ -12,7 +12,6 @@ public class Library {
 
 	private User user;
 	private List<Book> books = new ArrayList<Book>();
-	private static PersistenceDelegate persistenceDelegate = null;
 
 	public static void main(String[] args) {
 		//		User user = new User("x", "x", UserType.EXISTING);
@@ -86,16 +85,8 @@ public class Library {
 		return libraryString.toString();
 	}
 
-	static void setPersistenceDelegate(PersistenceDelegate persistenceDelegate) {
-		Library.persistenceDelegate = persistenceDelegate;
-	}
-
 	static private PersistenceDelegate getPersistenceDelegate() {
-		if (persistenceDelegate == null) {
-			return ApplicationContext.getPersistenceDelegate();
-		} else {
-			return persistenceDelegate;
-		}		
+		return ApplicationContext.getPersistenceDelegate();
 	}
 
 	List<Book> getBooks() {
