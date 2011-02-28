@@ -139,8 +139,8 @@ public class DatabaseDelegate implements PersistenceDelegate {
 		return null;
 	}
 
-	public List<List<Object>> findAny(Persistable persistable) {
-		List<List<Object>> returnList = new ArrayList<List<Object>>();
+	public List<Persistable> findAny(Persistable persistable) {
+		List<Persistable> returnList = new ArrayList<Persistable>();
 		try {
 			Connection conn = getConnection();
 			try {
@@ -159,7 +159,7 @@ public class DatabaseDelegate implements PersistenceDelegate {
 						for (int j = 1; j <= persistable.getColumnCount(); j++) {
 							objectList.add(resultSet.getObject(j));
 						}
-						returnList.add(objectList);
+						returnList.add(persistable.newFromDBColumns(objectList));
 					}
 				}
 			} finally {
@@ -174,8 +174,8 @@ public class DatabaseDelegate implements PersistenceDelegate {
 		return returnList;
 	}
 
-	public List<List<Object>> findAll(Persistable persistable) {
-		List<List<Object>> returnList = new ArrayList<List<Object>>();
+	public List<Persistable> findAll(Persistable persistable) {
+		List<Persistable> returnList = new ArrayList<Persistable>();
 		try {
 			Connection conn = getConnection();
 			try {
@@ -194,7 +194,7 @@ public class DatabaseDelegate implements PersistenceDelegate {
 						for (int j = 1; j <= persistable.getColumnCount(); j++) {
 							objectList.add(resultSet.getObject(j));
 						}
-						returnList.add(objectList);
+						returnList.add(persistable.newFromDBColumns(objectList));
 					}
 				}
 			} finally {

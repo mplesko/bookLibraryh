@@ -5,7 +5,7 @@ import java.util.List;
 public class DummyDelegate implements PersistenceDelegate {
 	public boolean persistReturnValue;
 	public Persistable findOneReturnValue;
-	public List<List<Object>> findAnyReturnValue;
+	public List<Persistable> findAnyReturnValue;
 	public boolean existsReturnValue;
 
 	public void setFindOneReturnValue(Persistable findOneReturnValue) {
@@ -32,7 +32,7 @@ public class DummyDelegate implements PersistenceDelegate {
 		return existsReturnValue;
 	}
 
-	public List<List<Object>> findAny(Persistable persistable) {
+	public List<Persistable> findAny(Persistable persistable) {
 		return findAnyReturnValue;
 	}
 
@@ -43,7 +43,7 @@ public class DummyDelegate implements PersistenceDelegate {
 	}
 
 	@Override
-	public List<List<Object>> findAll(Persistable persistable) {
+	public List<Persistable> findAll(Persistable persistable) {
 		// TODO Auto-generated method stub
 		return null;
 	}

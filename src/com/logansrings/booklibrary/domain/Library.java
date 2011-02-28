@@ -25,12 +25,12 @@ public class Library {
 
 	private void initializeBooks() {
 		UserBook userBook = new UserBook(user, "find");
-		List<List<Object>> findList = getPersistenceDelegate().findAny(userBook);
+		List<Persistable> findList = getPersistenceDelegate().findAny(userBook);
 		if (findList.size() == 0) {
 			return;
 		} else {
-			for (List<Object> objectList : findList) {
-				Long bookId = (Long) objectList.get(1);
+			for (Persistable persistable : findList) {
+				Long bookId = persistable.getId();
 				books.add(new Book(bookId));
 			}
 		}
@@ -156,6 +156,11 @@ public class Library {
 		@Override
 		public void setId(Long id) {
 			//			this.id = id;		
+		}
+
+		@Override
+		public boolean isValid() {
+			return true;
 		}
 	}
 

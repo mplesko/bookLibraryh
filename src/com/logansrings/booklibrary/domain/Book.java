@@ -9,7 +9,6 @@ import com.logansrings.booklibrary.app.ApplicationContext;
 import com.logansrings.booklibrary.app.ApplicationUtilities;
 import com.logansrings.booklibrary.persistence.Persistable;
 import com.logansrings.booklibrary.persistence.PersistenceDelegate;
-import com.logansrings.booklibrary.util.UniqueId;
 
 public class Book implements Persistable{
 
@@ -163,17 +162,12 @@ public class Book implements Persistable{
 
 	public static List<Book> getAll() {
 		List<Book> books = new ArrayList<Book>();
-		List<List<Object>> findList = getPersistenceDelegate().findAll(new Book());
+		List<Persistable> findList = getPersistenceDelegate().findAll(new Book());
 		if (findList.size() == 0) {
 			// nothing to do
 		} else {
-			for (List<Object> objectList : findList) {
-				Book book = new Book();
-				book.id = (Long) objectList.get(0);
-				book.title = (String) objectList.get(1);
-				book.authorId = (Long) objectList.get(2);
-				book.author = new Author(book.authorId);
-				books.add(book);
+			for (Persistable persistable : findList) {
+				books.add((Book)persistable);
 			}
 		}
 		return books;

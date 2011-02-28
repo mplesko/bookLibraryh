@@ -181,8 +181,9 @@ public class HibernateDelegate implements PersistenceDelegate {
 		Session session = getSession();
 		try {
 			session.beginTransaction();
-			String q = "from " + persistable.getClass().getName();
-			List list = session.createQuery(q).list();	
+			List list = session.createQuery(
+					"from " + persistable.getClass().getName())
+					.list();	
 			return list;
 		} catch (Exception e) {
 			Notification.newNotification(

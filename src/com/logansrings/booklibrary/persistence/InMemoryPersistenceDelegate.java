@@ -85,8 +85,8 @@ public class InMemoryPersistenceDelegate implements PersistenceDelegate {
 		}
 	}
 
-	public List<List<Object>> findAny(Persistable persistable) {
-		List<List<Object>> returnList = new ArrayList<List<Object>>();
+	public List<Persistable> findAny(Persistable persistable) {
+		List<Persistable> returnList = new ArrayList<Persistable>();
 		for (InMemoryObject inMemoryObject :
 			getInMemoryObjectsForTable(persistable.getTableName())) {
 
@@ -102,18 +102,20 @@ public class InMemoryPersistenceDelegate implements PersistenceDelegate {
 				}
 			}
 			if (found) {
-				returnList.add(inMemoryObject.getValuesAsList());
+				returnList.add(persistable.newFromDBColumns(
+						inMemoryObject.getValuesAsList()));
 			}                                                             
 		}                             
 		return returnList;
 	}
 
 	@Override
-	public List<List<Object>> findAll(Persistable persistable) {
-		List<List<Object>> returnList = new ArrayList<List<Object>>();
+	public List<Persistable> findAll(Persistable persistable) {
+		List<Persistable> returnList = new ArrayList<Persistable>();
 		for (InMemoryObject inMemoryObject :
 			getInMemoryObjectsForTable(persistable.getTableName())) {
-			returnList.add(inMemoryObject.getValuesAsList());
+			returnList.add(persistable.newFromDBColumns(
+					inMemoryObject.getValuesAsList()));
 		}                             
 		return returnList;
 	}
