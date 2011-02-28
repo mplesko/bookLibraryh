@@ -118,6 +118,14 @@ public class Author implements Persistable {
 		author.context = "a context";
 		return author;
 	}
+	public static Author getTestAuthor(String firstName, String lastName) {
+		Author author = new Author();
+		author.firstName = firstName;
+		author.lastName = lastName;
+		author.valid = true;
+		author.context = "a context";
+		return author;
+	}
 
 	public int getColumnCount() {
 		return 3;

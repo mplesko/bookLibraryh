@@ -1,8 +1,9 @@
 package com.logansrings.booklibrary.persistence;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import javax.servlet.ServletException;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -10,6 +11,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.criterion.Example;
 
+import com.logansrings.booklibrary.app.ApplicationContext;
 import com.logansrings.booklibrary.domain.Author;
 import com.logansrings.booklibrary.notification.Notification;
 import com.logansrings.booklibrary.notification.Severity;
@@ -21,39 +23,46 @@ import com.logansrings.booklibrary.notification.Type;
 public class HibernateDelegate implements PersistenceDelegate {
 	private static SessionFactory sessionFactory = getSessionFactory();
 
-	public static void main(String[] args) {
-		Author author = Author.getTestAuthor();
-		HibernateDelegate hibernateDelegate = new HibernateDelegate();
+	public static void main(String[] args) throws ServletException {
+		new ApplicationContext().init();
+		PersistenceDelegate hibernateDelegate = 
+			ApplicationContext.getPersistenceDelegate();
 		
-		hibernateDelegate.findById(author);
-		hibernateDelegate.findOne(author);
-		hibernateDelegate.findAny(author);
-		hibernateDelegate.findAll(author);
-		hibernateDelegate.exists(author);
-		hibernateDelegate.delete(author);
+		Author author = Author.getTestAuthor("a", "d");
+		Persistable persistable;
+		List<Persistable> persistables;
+		int count;
+		boolean bool;
 		
-		hibernateDelegate.persist(author);
+		persistable = hibernateDelegate.findById(author);
+		persistable = hibernateDelegate.findOne(author);
+		count = hibernateDelegate.findAny(author).size();
+		count = hibernateDelegate.findAll(author).size();
+		bool = hibernateDelegate.exists(author);
+		bool = hibernateDelegate.delete(author);
 		
-		hibernateDelegate.findById(author);
-		hibernateDelegate.findOne(author);
-		hibernateDelegate.findAny(author);
-		hibernateDelegate.findAll(author);
-		hibernateDelegate.exists(author);
+		bool = hibernateDelegate.persist(author);
 		
-		hibernateDelegate.delete(author);
+		persistable = hibernateDelegate.findById(author);
+		persistable = hibernateDelegate.findOne(author);
+		count = hibernateDelegate.findAny(author).size();
+		count = hibernateDelegate.findAll(author).size();
+		bool = hibernateDelegate.exists(author);
 		
-		hibernateDelegate.findById(author);
-		hibernateDelegate.findOne(author);
+		bool = hibernateDelegate.delete(author);
+		
+		count = hibernateDelegate.findAll(author).size();
+		persistable = hibernateDelegate.findById(author);
+		persistable = hibernateDelegate.findOne(author);
 
 	}
 
 	public boolean persist(Persistable persistable) {
+		Session session = getSession();
 		try {
-			Session session = getSession();
 			session.beginTransaction();
 			session.save(persistable);
 			session.getTransaction().commit();
-			session.close();
 			Notification.newNotification(
 					this, "HibernateDelegate.persist()", 
 					persistable.getTableName() + " " + 
@@ -62,27 +71,38 @@ public class HibernateDelegate implements PersistenceDelegate {
 			return true;
 
 		} catch (HibernateException e) {
+			session.close();
 			Notification.newNotification(
 					this, "HibernateDelegate.persist()", 
 					persistable.getTableName() + " " + 
 					persistable.toString() + " failed", e.getMessage(), 
 					Type.TECHNICAL, Severity.ERROR, e);   
 			return false;
-		} 
+		}
 	}
 
 	public Persistable findById(Persistable persistable) {
+//		if (persistable.getId() == null) {
+//			Notification.newNotification(
+//					this, "HibernateDelegate.findById()", 
+//					persistable.toString() + " failed", "id is null", 
+//					Type.TECHNICAL, Severity.ERROR);   
+//			return null;
+//		}
+		
+		Session session = getSession();
 		try {
-			Session session = getSession();
-//			session.beginTransaction();
+			session.beginTransaction();
 			return (Persistable)session.load(
 					persistable.getClass(), persistable.getId());
-		} catch (HibernateException e) {
+		} catch (Exception e) {
 			Notification.newNotification(
 					this, "HibernateDelegate.findById()", 
 					persistable.toString() + " failed", e.getMessage(), 
 					Type.TECHNICAL, Severity.ERROR);   
 			return null;
+		} finally {
+			session.close();
 		}
 	}
 	
@@ -105,7 +125,9 @@ public class HibernateDelegate implements PersistenceDelegate {
 	public Persistable findOne(Persistable persistable) {
 		try {
 			List<Persistable> list = findQBE(persistable);
-			if (list.isEmpty()) {
+			if (list.size() == 1) {
+				return list.get(0);
+			} else if (list.isEmpty()) {
 				Notification.newNotification(
 						this, "HibernateDelegate.findOne()", 
 						persistable.toString() + " failed", 
@@ -117,15 +139,14 @@ public class HibernateDelegate implements PersistenceDelegate {
 						persistable.toString() + " failed", 
 						"result size = " + list.size(), 
 						Type.TECHNICAL, Severity.ERROR);   
-			}
-			return list.get(0);
+			}			
 		} catch (HibernateException e) {
 			Notification.newNotification(
 					this, "HibernateDelegate.findOne()", 
 					persistable.toString() + " failed", e.getMessage(), 
 					Type.TECHNICAL, Severity.ERROR);   
-			return null;
 		}
+		return null;
 	}
 
 	public List<Persistable> findAny(Persistable persistable) {
@@ -142,22 +163,26 @@ public class HibernateDelegate implements PersistenceDelegate {
 	}
 
 	private List<Persistable> findQBE(Persistable persistable) throws HibernateException {
-			Session session = getSession();
+		Session session = getSession();
+		try {
 			session.beginTransaction();
 			List list = session.createCriteria(persistable.getClass())
 				.add( Example.create(persistable))
 				.list();
-			session.close();
 			return list;
+		} catch (HibernateException e) {
+			throw e;
+		} finally {
+			session.close();
+		}			
 	}
 
 	public List<Persistable> findAll(Persistable persistable) {
-		List<List<Object>> returnList = new ArrayList<List<Object>>();
+		Session session = getSession();
 		try {
-			Session session = getSession();
+			session.beginTransaction();
 			String q = "from " + persistable.getClass().getName();
 			List list = session.createQuery(q).list();	
-			session.close();
 			return list;
 		} catch (Exception e) {
 			Notification.newNotification(
@@ -165,15 +190,22 @@ public class HibernateDelegate implements PersistenceDelegate {
 					persistable.toString() + " failed", e.getMessage(), 
 					Type.TECHNICAL, Severity.ERROR);   
 			return Collections.EMPTY_LIST;
+		} finally {
+			session.close();
 		}
 	}
 
 	public boolean delete(Persistable persistable) {
+		Session session = getSession();
 		try {
-			Session session = getSession();
-			Persistable toDelete = (Persistable)session.load(
+			session.beginTransaction();
+			Persistable toDelete = (Persistable)session.get(
 					persistable.getClass(), persistable.getId());
+			if (toDelete == null) {
+				throw new Exception("call to get() returned null");
+			}
 			session.delete(toDelete);
+			session.getTransaction().commit();
 			Notification.newNotification(
 					this, "HibernateDelegate.delete()", 
 					persistable.getTableName() + " " + 
@@ -185,8 +217,9 @@ public class HibernateDelegate implements PersistenceDelegate {
 					this, "HibernateDelegate.delete()", 
 					persistable.toString() + " failed", e.getMessage(), 
 					Type.TECHNICAL, Severity.ERROR);   
+			session.close();
 			return false;
-		} 
+		}
 	}
 
 	private static SessionFactory getSessionFactory() {

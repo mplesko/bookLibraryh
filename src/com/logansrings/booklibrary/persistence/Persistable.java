@@ -11,5 +11,6 @@ public interface Persistable {
 	Object[] getColumnValues();
 	int getColumnCount();
 	Persistable newFromDBColumns(List<Object> objectList);
+	boolean isValid();
 
 }
