@@ -28,7 +28,7 @@ public class HibernateDelegate implements PersistenceDelegate {
 		PersistenceDelegate hibernateDelegate = 
 			ApplicationContext.getPersistenceDelegate();
 		
-		Author author = Author.getTestAuthor("a", "d");
+		Author author = Author.getTestAuthor("a", "e");
 		Persistable persistable;
 		List<Persistable> persistables;
 		int count;

@@ -9,7 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.servlet.ServletException;
+import javax.persistence.Version;
+
 import org.hibernate.annotations.GenericGenerator;
 import com.logansrings.booklibrary.app.ApplicationContext;
 import com.logansrings.booklibrary.app.ApplicationUtilities;
@@ -24,6 +25,10 @@ public class Author implements Persistable {
 	@GeneratedValue(generator="increment")
 	@GenericGenerator(name="increment", strategy = "increment")
 	private Long id;
+	@Version
+    @Column(name="version")
+    private Integer version;
+
 	@Column(name = "firstName")
 	private String firstName;
 	@Column(name = "lastName")
@@ -37,15 +42,6 @@ public class Author implements Persistable {
 	private String context = "";
 	@Transient
 	private static final String UNINITIALIZED = "must have firstName and lastName";
-	
-	public static void main(String[] args) throws ServletException {
-		new ApplicationContext().init();
-		Author author = new Author("Fred", "Brooks");
-//		author.persistAuthor();
-//		System.out.println(Author.getTestAuthor().toString());
-		author.firstName = "";
-		author.findById();
-	}
 	
 	Author() {
 		valid = false;
@@ -204,5 +200,25 @@ public class Author implements Persistable {
 	@Override
 	public void setId(Long id) {
 		this.id = id;		
+	}
+	
+    public Integer getVersion() {
+    	return version;
+    }	
+
+	public boolean equals(Object other) {
+		if (other == null || !(other instanceof Author)) {
+			return false;
+		}		
+		final Author that = (Author)other;
+		return this == that ||
+				(this.firstName.equals(that.firstName) && 
+						this.lastName.equals(that.lastName));
+	}
+	public int hashCode() {
+		int hash = 7;
+		hash = 31 * hash + (null == firstName ? 0 : firstName.hashCode());
+		hash = 31 * hash + (null == lastName ? 0 : lastName.hashCode());
+		return hash;
 	}
 }

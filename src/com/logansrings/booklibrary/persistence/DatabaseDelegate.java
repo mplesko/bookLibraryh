@@ -9,6 +9,7 @@ import java.util.List;
 
 import com.logansrings.booklibrary.app.ApplicationProperties;
 import com.logansrings.booklibrary.app.ApplicationUtilities;
+import com.logansrings.booklibrary.domain.Author;
 import com.logansrings.booklibrary.domain.User;
 import com.logansrings.booklibrary.notification.Notification;
 import com.logansrings.booklibrary.notification.Severity;
@@ -22,8 +23,33 @@ public class DatabaseDelegate implements PersistenceDelegate {
 	private static Connection connection = null;
 
 	public static void main(String[] args) {
-		User user = User.getTestUser();
-		new DatabaseDelegate().findOne(user);
+		DatabaseDelegate databaseDelegate = new DatabaseDelegate();
+		Author author = Author.getTestAuthor("a", "e");
+		Persistable persistable;
+		List<Persistable> persistables;
+		int count;
+		boolean bool;
+		
+		persistable = databaseDelegate.findById(author);
+		persistable = databaseDelegate.findOne(author);
+		count = databaseDelegate.findAny(author).size();
+		count = databaseDelegate.findAll(author).size();
+		bool = databaseDelegate.exists(author);
+		bool = databaseDelegate.delete(author);
+		
+		bool = databaseDelegate.persist(author);
+		
+		persistable = databaseDelegate.findById(author);
+		persistable = databaseDelegate.findOne(author);
+		count = databaseDelegate.findAny(author).size();
+		count = databaseDelegate.findAll(author).size();
+		bool = databaseDelegate.exists(author);
+		
+		bool = databaseDelegate.delete(author);
+		
+		count = databaseDelegate.findAll(author).size();
+		persistable = databaseDelegate.findById(author);
+		persistable = databaseDelegate.findOne(author);
 	}
 
 	public boolean persist(Persistable persistable) {
