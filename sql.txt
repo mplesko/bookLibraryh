@@ -1,3 +1,4 @@
+alter table author add column version int
 --select *  
 --delete from author where firstName like 'first%'
 --delete from book where title like 'x%'
@@ -15,11 +16,13 @@ CREATE TABLE booklibrary.book (
          authorId BIGINT(13)
        ); 
        
-CREATE TABLE booklibrary.author (
+CREATE TABLE booklibraryh.author (
          id BIGINT(13),
+         version INT,
          firstName CHAR(80),
          lastName CHAR(80)
        ); 
+insert into booklibraryh.author values (1,1,'Fred','Brooks')
        
 CREATE TABLE booklibrary.userbook (
          userId BIGINT(13),

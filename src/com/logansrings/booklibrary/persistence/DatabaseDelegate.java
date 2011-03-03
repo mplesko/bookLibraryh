@@ -10,7 +10,6 @@ import java.util.List;
 import com.logansrings.booklibrary.app.ApplicationProperties;
 import com.logansrings.booklibrary.app.ApplicationUtilities;
 import com.logansrings.booklibrary.domain.Author;
-import com.logansrings.booklibrary.domain.User;
 import com.logansrings.booklibrary.notification.Notification;
 import com.logansrings.booklibrary.notification.Severity;
 import com.logansrings.booklibrary.notification.Type;
@@ -57,6 +56,7 @@ public class DatabaseDelegate implements PersistenceDelegate {
 			Connection conn = getConnection();
 			try {
 				persistable.setId(getId());
+				persistable.setVersion(getVersion());
 				conn.createStatement().executeUpdate(buildInsertSql(persistable));
 				Notification.newNotification(
 						this, "DataBaseDelegate.persist()", 
@@ -80,6 +80,9 @@ public class DatabaseDelegate implements PersistenceDelegate {
 
 	private Long getId() {
 		return UniqueId.getId();
+	}
+	private Integer getVersion() {
+		return 1;
 	}
 
 	public boolean exists(Persistable persistable) {

@@ -92,7 +92,7 @@ public class ApplicationUtilities {
            }
            if (value instanceof String) {
                  result.append("'" + value + "'");
-           } else if (value instanceof Long) {
+           } else if (value instanceof Long || value instanceof Integer) {
                  result.append(value);
            }
            count++;

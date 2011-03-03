@@ -101,8 +101,8 @@ public class Author implements Persistable {
 	}
 	
 	public String toString() {
-		return String.format("[%s] id:%d firstName:%s lastName:%s valid:%s context:%s ",
-				"Author", id, firstName, lastName, valid, context);
+		return String.format("[%s] id:%d firstName:%s lastName:%s valid:%s context:%s version:%d",
+				"Author", id, firstName, lastName, valid, context, version);
 	}
 
 	public static Author getTestAuthor() {
@@ -112,6 +112,7 @@ public class Author implements Persistable {
 		author.lastName = "authorLastName";
 		author.valid = true;
 		author.context = "a context";
+		author.version = 1;
 		return author;
 	}
 	public static Author getTestAuthor(String firstName, String lastName) {
@@ -120,11 +121,12 @@ public class Author implements Persistable {
 		author.lastName = lastName;
 		author.valid = true;
 		author.context = "a context";
+		author.version = 1;
 		return author;
 	}
 
 	public int getColumnCount() {
-		return 3;
+		return 4;
 	}
 
 	public String[] getColumnNames() {
@@ -133,7 +135,7 @@ public class Author implements Persistable {
 		} else if ("findName".equals(persistableMode)) {
 			return new String[]{"firstName", "lastName"};
 		} else {
-			return new String[]{"id", "firstName", "lastName"};
+			return new String[]{"id", "version", "firstName", "lastName"};
 		}
 	}
 
@@ -143,7 +145,7 @@ public class Author implements Persistable {
 		} else if ("findName".equals(persistableMode)) {
 			return new Object[]{firstName, lastName};
 		} else {
-			return new Object[]{id, firstName, lastName};
+			return new Object[]{id, version, firstName, lastName};
 		}
 	}
 
@@ -163,10 +165,6 @@ public class Author implements Persistable {
 		return ApplicationContext.getPersistenceDelegate();
 	}
 
-	public Long getId() {
-		return id;
-	}
-	
 	String getFirstName() {
 		return firstName;
 	}
@@ -189,10 +187,11 @@ public class Author implements Persistable {
 	
 	public Author newFromDBColumns(List<Object> objectList) {
 		Author author = new Author();
-		if (objectList.size() == 3) {
+		if (objectList.size() == getColumnCount()) {
 			author.id = (Long) objectList.get(0);
-			author.firstName = (String) objectList.get(1);
-			author.lastName = (String) objectList.get(2);
+			author.version = (Integer) objectList.get(1);
+			author.firstName = (String) objectList.get(2);
+			author.lastName = (String) objectList.get(3);
 		}
 		return author;
 	}
@@ -202,8 +201,16 @@ public class Author implements Persistable {
 		this.id = id;		
 	}
 	
+	public Long getId() {
+		return id;
+	}
+	
     public Integer getVersion() {
     	return version;
+    }	
+
+    public void setVersion(Integer version) {
+    	this.version = version;
     }	
 
 	public boolean equals(Object other) {
