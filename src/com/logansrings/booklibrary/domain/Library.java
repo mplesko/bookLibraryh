@@ -162,6 +162,18 @@ public class Library {
 		public boolean isValid() {
 			return true;
 		}
+
+		@Override
+		public Integer getVersion() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public void setVersion(Integer version) {
+			// TODO Auto-generated method stub
+			
+		}
 	}
 
 }

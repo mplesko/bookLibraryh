@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pageflow:Pageflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf12648295599780" configfile="/booklibrary/WebContent/WEB-INF/faces-config.xml">
+<pageflow:Pageflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf12648295599780" configfile="/booklibraryh/WebContent/WEB-INF/faces-config.xml">
   <nodes xsi:type="pageflow:PFPage" name="login" x="122" y="178" id="pf12654371318083" referenceLink="//@navigationRule.1/@navigationCase.0/@toViewId|" path="/login.jsp"/>
   <nodes xsi:type="pageflow:PFPage" name="main" x="122" y="562" id="pf12654371318085" referenceLink="//@navigationRule.3/@navigationCase.0/@toViewId|" path="/main.jsp"/>
   <nodes xsi:type="pageflow:PFPage" name="addbook" x="122" y="946" id="pf12679270663582" referenceLink="//@navigationRule.3/@fromViewId|" path="/addbook.jsp"/>
@@ -13,17 +13,17 @@
   <nodes xsi:type="pageflow:PFPage" name="addbooktolibrary.xhtml" id="pf12857267592452" referenceLink="//@navigationRule.4/@fromViewId|" outlinks="pf129575324653713" inlinks="pf12857267592441 pf129575324653711" path="/addbooktolibrary.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="main.xhtml" id="pf12957531076406" referenceLink="//@navigationRule.1/@navigationCase.0/@toViewId|" inlinks="pf12957531076403" path="/main.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="addbook.xhtml" id="pf129575324653714" referenceLink="//@navigationRule.3/@fromViewId|" outlinks="pf129575324653712" path="/addbook.xhtml"/>
-  <links id="pf12758423116145" target="pf12758423116146" source="pf12758423116144" outcome="login" redirect="true"/>
-  <links id="pf12852933590711" target="pf12852933590716" source="pf12758423116144" outcome="authorlist" redirect="true"/>
-  <links id="pf12852933590712" target="pf12852933590727" source="pf12758423116144" outcome="library" redirect="true"/>
-  <links id="pf12852933590713" target="pf12852933590728" source="pf12758423116144" outcome="booklist" redirect="true"/>
-  <links id="pf12852933590714" target="pf12852933590729" source="pf12758423116144" outcome="addauthors" redirect="true"/>
-  <links id="pf12852933590715" target="pf128529335907210" source="pf12758423116144" outcome="addbooks" redirect="true"/>
-  <links id="pf12857267592441" target="pf12857267592452" source="pf12758423116144" outcome="addbooktolibrary" redirect="true"/>
-  <links id="pf12957531076403" target="pf12957531076406" source="pf12758423116144" outcome="logout"/>
-  <links id="pf12957532465379" target="pf12852933590727" source="pf12758423116146" outcome="success"/>
-  <links id="pf129575324653710" target="pf12758423116146" source="pf12758423116146" outcome="failure"/>
-  <links id="pf129575324653711" target="pf12857267592452" source="pf12852933590727" outcome="addBooks"/>
-  <links id="pf129575324653712" target="pf12852933590727" source="pf129575324653714" outcome="success"/>
-  <links id="pf129575324653713" target="pf12852933590727" source="pf12857267592452" outcome="success"/>
+  <links id="pf12758423116145" target="pf12758423116146" source="pf12758423116144"/>
+  <links id="pf12852933590711" target="pf12852933590716" source="pf12758423116144"/>
+  <links id="pf12852933590712" target="pf12852933590727" source="pf12758423116144"/>
+  <links id="pf12852933590713" target="pf12852933590728" source="pf12758423116144"/>
+  <links id="pf12852933590714" target="pf12852933590729" source="pf12758423116144"/>
+  <links id="pf12852933590715" target="pf128529335907210" source="pf12758423116144"/>
+  <links id="pf12857267592441" target="pf12857267592452" source="pf12758423116144"/>
+  <links id="pf12957531076403" target="pf12957531076406" source="pf12758423116144"/>
+  <links id="pf12957532465379" target="pf12852933590727" source="pf12758423116146"/>
+  <links id="pf129575324653710" target="pf12758423116146" source="pf12758423116146"/>
+  <links id="pf129575324653711" target="pf12857267592452" source="pf12852933590727"/>
+  <links id="pf129575324653712" target="pf12852933590727" source="pf129575324653714"/>
+  <links id="pf129575324653713" target="pf12852933590727" source="pf12857267592452"/>
 </pageflow:Pageflow>

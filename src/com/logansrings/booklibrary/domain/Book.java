@@ -3,21 +3,51 @@ package com.logansrings.booklibrary.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.persistence.Version;
 import javax.servlet.ServletException;
+
+import org.hibernate.annotations.GenericGenerator;
 
 import com.logansrings.booklibrary.app.ApplicationContext;
 import com.logansrings.booklibrary.app.ApplicationUtilities;
 import com.logansrings.booklibrary.persistence.Persistable;
 import com.logansrings.booklibrary.persistence.PersistenceDelegate;
 
+@Entity
+@Table( name = "book" )
 public class Book implements Persistable{
-
-	private String persistableMode;
+	@Id
+	@Column(name = "id")
+	@GeneratedValue(generator="increment")
+	@GenericGenerator(name="increment", strategy = "increment")
 	private Long id;
+	@Version
+    @Column(name="version")
+    private Integer version;
+	
+	@Column(name = "title")
 	private String title = "";
+	
+	@ManyToOne(cascade = {CascadeType.PERSIST})
+    @JoinColumn(name="authorid")
 	private Author author;
+	
+	@Transient
 	private Long authorId;
+	@Transient
+	private String persistableMode;
+	@Transient
 	private boolean valid;
+	@Transient
 	private String context = "";
 
 	public static void main(String[] args) throws ServletException {
@@ -27,7 +57,7 @@ public class Book implements Persistable{
 	}
 	
 
-	private Book() {}
+	Book() {}
 	
 	public Book(String title, Author author) {
 		this.title = title;
@@ -188,5 +218,18 @@ public class Book implements Persistable{
 	@Override
 	public void setId(Long id) {
 		this.id = id;		
+	}
+
+
+	@Override
+	public Integer getVersion() {
+		return version;
+	}
+
+
+	@Override
+	public void setVersion(Integer version) {
+		this.version = version;
+		
 	}
 }

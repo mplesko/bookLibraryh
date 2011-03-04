@@ -214,4 +214,16 @@ public class User implements Persistable {
 		this.id = id;		
 	}
 
+	@Override
+	public Integer getVersion() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setVersion(Integer version) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
