@@ -13,6 +13,7 @@ import org.hibernate.criterion.Example;
 
 import com.logansrings.booklibrary.app.ApplicationContext;
 import com.logansrings.booklibrary.domain.Author;
+import com.logansrings.booklibrary.domain.Book;
 import com.logansrings.booklibrary.notification.Notification;
 import com.logansrings.booklibrary.notification.Severity;
 import com.logansrings.booklibrary.notification.Type;
@@ -54,6 +55,12 @@ public class HibernateDelegate implements PersistenceDelegate {
 		count = hibernateDelegate.findAll(author).size();
 		persistable = hibernateDelegate.findById(author);
 		persistable = hibernateDelegate.findOne(author);
+		
+		Author fred = (Author)hibernateDelegate.findOne(
+				Author.getTestAuthor("Fred", "Brooks"));
+		Book book = Book.getTestBook("The Mythical Man Month", fred);
+		bool = hibernateDelegate.persist(book);
+		
 
 	}
 
@@ -228,10 +235,10 @@ public class HibernateDelegate implements PersistenceDelegate {
 		try {
 			sessionFactory = 
 				new Configuration().configure().buildSessionFactory();
-		} catch(HibernateException e) {
+		} catch(Throwable throwable) {
 			Notification.newNotification(
 					sessionFactory, "HibernateDelegate.getSessionFactory()", 
-					"getSessionFactory() failed", e.getMessage(), 
+					"getSessionFactory() failed", throwable.getMessage(), 
 					Type.TECHNICAL, Severity.ERROR);   
 		}
 		return sessionFactory;

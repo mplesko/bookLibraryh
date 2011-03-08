@@ -4,14 +4,16 @@ alter table author add column version int
 --delete from book where title like 'x%'
 --delete from user where userName in ('a','b','x','y','z')
 --delete  from userbook where bookId < 3
+
 CREATE TABLE booklibrary.user (
          id BIGINT(13),
          userName CHAR(20),
          password CHAR(41)
        );
        
-CREATE TABLE booklibrary.book (
+CREATE TABLE booklibraryh.book (
          id BIGINT(13),
+         version INT,
          title CHAR(200),
          authorId BIGINT(13)
        ); 

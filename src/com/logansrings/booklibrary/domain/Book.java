@@ -117,8 +117,8 @@ public class Book implements Persistable{
 		return toString();
 	}
 	public String toString() {
-		return String.format("[%s] id:%d title:%s valid:%s context:%s author:%s",
-				"Book", id, title, valid, context, author.toString());
+		return String.format("[%s] id:%d title:%s valid:%s context:%s  version:%d author:%s",
+				"Book", id, title, valid, context, version, author.toString());
 	}
 
 	public static Book getTestBook() {
@@ -128,11 +128,22 @@ public class Book implements Persistable{
 		book.author = Author.getTestAuthor();		
 		book.valid = true;
 		book.context = "a context";
+		book.version = 1;
+		return book;
+	}
+
+	public static Book getTestBook(String title, Author author) {
+		Book book = new Book();
+		book.title = title;
+		book.author = author;		
+		book.valid = true;
+		book.context = "a context";
+		book.version = 1;
 		return book;
 	}
 
 	public int getColumnCount() {
-		return 3;
+		return 4;
 	}
 
 	public String[] getColumnNames() {
@@ -141,7 +152,7 @@ public class Book implements Persistable{
 		} else if ("findTitle".equals(persistableMode)) {
 			return new String[]{"title"};
 		} else {
-			return new String[]{"id", "title", "authorId"};
+			return new String[]{"id", "version", "title", "authorId"};
 		}
 	}
 
@@ -151,7 +162,7 @@ public class Book implements Persistable{
 		} else if ("findTitle".equals(persistableMode)) {
 			return new Object[]{title};
 		} else {
-			return new Object[]{id, title, author.getId()};
+			return new Object[]{id, version, title, author.getId()};
 		}
 	}
 
@@ -207,10 +218,11 @@ public class Book implements Persistable{
 	@Override
 	public Persistable newFromDBColumns(List<Object> objectList) {
 		Book book = new Book();
-		if (objectList.size() == 3) {
+		if (objectList.size() == 4) {
 			book.id = (Long) objectList.get(0);
-			book.title = (String) objectList.get(1);
-			book.authorId = (Long) objectList.get(2);
+			book.version = (Integer) objectList.get(1);
+			book.title = (String) objectList.get(2);
+			book.authorId = (Long) objectList.get(3);
 			book.author = new Author(book.authorId);
 		}
 		return book;
@@ -231,5 +243,20 @@ public class Book implements Persistable{
 	public void setVersion(Integer version) {
 		this.version = version;
 		
+	}
+	public boolean equals(Object other) {
+		if (other == null || !(other instanceof Book)) {
+			return false;
+		}		
+		final Book that = (Book)other;
+		return this == that ||
+				(this.title.equals(that.title) && 
+						this.author.equals(that.author));
+	}
+	public int hashCode() {
+		int hash = 7;
+		hash = 31 * hash + (null == title ? 0 : title.hashCode());
+		hash = 31 * hash + (null == author ? 0 : author.hashCode());
+		return hash;
 	}
 }

@@ -12,7 +12,6 @@ import com.logansrings.booklibrary.notification.Type;
 import com.logansrings.booklibrary.persistence.Persistable;
 import com.logansrings.booklibrary.persistence.PersistenceDelegate;
 import com.logansrings.booklibrary.util.Encrypting;
-import com.logansrings.booklibrary.util.UniqueId;
 
 public class User implements Persistable {
 
