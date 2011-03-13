@@ -44,8 +44,6 @@ public class Book implements Persistable{
 	@Transient
 	private Long authorId;
 	@Transient
-	private String persistableMode;
-	@Transient
 	private boolean valid;
 	@Transient
 	private String context = "";
@@ -54,8 +52,7 @@ public class Book implements Persistable{
 //		Book book = new Book("Mythical Man Month", Author.getTestAuthor());
 //		System.out.println(Book.getTestBook().toString());
 		Book.getAll();
-	}
-	
+	}	
 
 	Book() {}
 	
@@ -80,7 +77,6 @@ public class Book implements Persistable{
 	}
 
 	private void findById() {
-		persistableMode = "findId";
 		Persistable persistable = getPersistenceDelegate().findOne(this);
 		if (persistable == null) {
 			title = "N/A";
@@ -93,7 +89,6 @@ public class Book implements Persistable{
 	}
 
 	private void findByTitle() {
-		persistableMode = "findTitle";
 		Persistable persistable = getPersistenceDelegate().findOne(this);
 		if (persistable == null) {
 			valid = false;
@@ -104,7 +99,6 @@ public class Book implements Persistable{
 	}
 
 	public void persistBook() {
-		persistableMode = "create";
 		if (getPersistenceDelegate().persist(this)) {
 			// ok, expected
 		} else {
@@ -142,64 +136,23 @@ public class Book implements Persistable{
 		return book;
 	}
 
-	public int getColumnCount() {
-		return 4;
-	}
-
-	public String[] getColumnNames() {
-		if ("findId".equals(persistableMode)) {
-			return new String[]{"id"};
-		} else if ("findTitle".equals(persistableMode)) {
-			return new String[]{"title"};
-		} else {
-			return new String[]{"id", "version", "title", "authorId"};
-		}
-	}
-
-	public Object[] getColumnValues() {
-		if ("findId".equals(persistableMode)) {
-			return new Object[]{id};
-		} else if ("findTitle".equals(persistableMode)) {
-			return new Object[]{title};
-		} else {
-			return new Object[]{id, version, title, author.getId()};
-		}
-	}
-
-	public String getTableName() {
-		return "book";
-	}
-
 	static private PersistenceDelegate getPersistenceDelegate() {
 		return ApplicationContext.getPersistenceDelegate();
 	}
 
-	String getTitle() {
-		return title; 
-	}
+	String getTitle() {return title;}
 	
-	public Long getId() {
-		return id; 
-	}
+	public Long getId() {return id;}
+	@Override
+	public void setId(Long id) {this.id = id;}
 
-	Long getAuthorId() {
-		return authorId; 
-	}
+	Long getAuthorId() {return authorId;}
 
-	String getAuthorFirstName() {
-		return author.getFirstName();
-	}
-	String getAuthorLastName() {
-		return author.getLastName();
-	}
+	String getAuthorFirstName() {return author.getFirstName();}
+	String getAuthorLastName() {return author.getLastName();}
 	
-	public boolean isValid() {
-		return valid;
-	}
-
-	public boolean isNotValid() {
-		return ! isValid();
-	}
+	public boolean isValid() {return valid;}
+	public boolean isNotValid() {return ! isValid();}
 
 	public static List<Book> getAll() {
 		List<Book> books = new ArrayList<Book>();
@@ -214,36 +167,11 @@ public class Book implements Persistable{
 		return books;
 	}
 
-
 	@Override
-	public Persistable newFromDBColumns(List<Object> objectList) {
-		Book book = new Book();
-		if (objectList.size() == 4) {
-			book.id = (Long) objectList.get(0);
-			book.version = (Integer) objectList.get(1);
-			book.title = (String) objectList.get(2);
-			book.authorId = (Long) objectList.get(3);
-			book.author = new Author(book.authorId);
-		}
-		return book;
-	}
+	public Integer getVersion() {return version;}
 	@Override
-	public void setId(Long id) {
-		this.id = id;		
-	}
-
-
-	@Override
-	public Integer getVersion() {
-		return version;
-	}
-
-
-	@Override
-	public void setVersion(Integer version) {
-		this.version = version;
-		
-	}
+	public void setVersion(Integer version) {this.version = version;}
+	
 	public boolean equals(Object other) {
 		if (other == null || !(other instanceof Book)) {
 			return false;

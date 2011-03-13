@@ -108,12 +108,12 @@ public class Library {
 			this.persistableMode = mode;
 		}
 
-		@Override
+//		@Override
 		public int getColumnCount() {
 			return 2;
 		}
 
-		@Override
+//		@Override
 		public String[] getColumnNames() {
 			if ("find".equals(persistableMode)) {
 				return new String[] {"userId"};
@@ -122,7 +122,7 @@ public class Library {
 			}
 		}
 
-		@Override
+//		@Override
 		public Long[] getColumnValues() {
 			if ("find".equals(persistableMode)) {
 				return new Long[] {user.getId()};
@@ -131,7 +131,7 @@ public class Library {
 			}
 		}
 
-		@Override
+//		@Override
 		public String getTableName() {
 			return "userbook";
 		}	
@@ -147,7 +147,7 @@ public class Library {
 			return null;
 		}
 
-		@Override
+//		@Override
 		public Persistable newFromDBColumns(List<Object> objectList) {
 			// TODO Auto-generated method stub
 			return null;

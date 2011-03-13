@@ -58,8 +58,14 @@ public class HibernateDelegate implements PersistenceDelegate {
 		
 		Author fred = (Author)hibernateDelegate.findOne(
 				Author.getTestAuthor("Fred", "Brooks"));
-		Book book = Book.getTestBook("The Mythical Man Month", fred);
-		bool = hibernateDelegate.persist(book);
+//		Author fred = Author.getTestAuthor("Fred", "Brooks");
+		Book book1 = Book.getTestBook("The Mythical Man Month", fred);
+//		bool = hibernateDelegate.persist(book1);
+		
+		Book book2 = Book.getTestBook("The Mythical Man Month", null);
+			
+		Book book3 = (Book) hibernateDelegate.findOne(book2);
+		System.out.println(book3.toString());
 		
 
 	}
@@ -72,7 +78,6 @@ public class HibernateDelegate implements PersistenceDelegate {
 			session.getTransaction().commit();
 			Notification.newNotification(
 					this, "HibernateDelegate.persist()", 
-					persistable.getTableName() + " " + 
 					persistable.toString() + " successful", "", 
 					Type.DOMAIN, Severity.INFO);   
 			return true;
@@ -81,7 +86,6 @@ public class HibernateDelegate implements PersistenceDelegate {
 			session.close();
 			Notification.newNotification(
 					this, "HibernateDelegate.persist()", 
-					persistable.getTableName() + " " + 
 					persistable.toString() + " failed", e.getMessage(), 
 					Type.TECHNICAL, Severity.ERROR, e);   
 			return false;
@@ -165,7 +169,7 @@ public class HibernateDelegate implements PersistenceDelegate {
 					this, "HibernateDelegate.findAny()", 
 					persistable.toString() + " failed", e.getMessage(), 
 					Type.TECHNICAL, Severity.ERROR);
-			return Collections.EMPTY_LIST;
+			return Collections.emptyList();
 		}
 	}
 
@@ -197,7 +201,7 @@ public class HibernateDelegate implements PersistenceDelegate {
 					this, "HibernateDelegate.findAll()", 
 					persistable.toString() + " failed", e.getMessage(), 
 					Type.TECHNICAL, Severity.ERROR);   
-			return Collections.EMPTY_LIST;
+			return Collections.emptyList();
 		} finally {
 			session.close();
 		}
@@ -216,7 +220,6 @@ public class HibernateDelegate implements PersistenceDelegate {
 			session.getTransaction().commit();
 			Notification.newNotification(
 					this, "HibernateDelegate.delete()", 
-					persistable.getTableName() + " " + 
 					persistable.toString() + " successful", "", 
 					Type.DOMAIN, Severity.INFO);   
 			return true;

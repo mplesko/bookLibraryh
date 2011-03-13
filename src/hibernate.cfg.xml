@@ -39,6 +39,7 @@
 		 -->
 		<mapping class="com.logansrings.booklibrary.domain.Author" />
 		<mapping class="com.logansrings.booklibrary.domain.Book" />
+		<mapping class="com.logansrings.booklibrary.domain.User" />
 
 	</session-factory>
 </hibernate-configuration>

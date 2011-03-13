@@ -5,8 +5,9 @@ alter table author add column version int
 --delete from user where userName in ('a','b','x','y','z')
 --delete  from userbook where bookId < 3
 
-CREATE TABLE booklibrary.user (
+CREATE TABLE booklibraryh.user (
          id BIGINT(13),
+         version INT,
          userName CHAR(20),
          password CHAR(41)
        );
@@ -26,7 +27,7 @@ CREATE TABLE booklibraryh.author (
        ); 
 insert into booklibraryh.author values (1,1,'Fred','Brooks')
        
-CREATE TABLE booklibrary.userbook (
+CREATE TABLE booklibraryh.userbook (
          userId BIGINT(13),
          bookId BIGINT(13)
        );
