@@ -36,11 +36,13 @@ public class User implements Persistable {
 	@Column(name = "password")
 	private String password = "";
 
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch=FetchType.EAGER)
 	@JoinTable(name = "userbook",
 			joinColumns = {@JoinColumn(name = "userId")},
 			inverseJoinColumns = {@JoinColumn(name = "bookId")})
 	private Set<Book> books = new HashSet<Book>();
+	public void setBooks(Set<Book> books) {this.books = books;}
+	public Set<Book> getBooks() {return books;}
 	
 	@Transient
 	private boolean valid;
@@ -50,74 +52,83 @@ public class User implements Persistable {
 	private static Encrypting encrypting = null;
 
 	public static void main(String[] args) throws ServletException {
-		System.out.println(User.getTestUser().toString());
+//		System.out.println(User.getTestUser().toString());
+		User testUser = User.find("mark", "mark");
+		System.out.println(testUser.toString());
 	}
 
 	User() {}
 
-	public static User find(String inUserName, String inPassword) {
-		User user = new User(inUserName, inPassword, false);
-		return user;
-	}
-
-	public static User create(String inUserName, String inPassword) {
-		User user = new User(inUserName, inPassword, true);
-		return user;
-	}
-
-	private User(String inUserName, String inPassword, boolean newUser) {
-		if (ApplicationUtilities.isEmpty(inUserName, inPassword)) {
+	private User(String inUserName) {
+		this.userName = inUserName;
+		if (ApplicationUtilities.isEmpty(inUserName)) {
 			valid = false;
 			context = "must have userName and password";
 			return;
 		}
-		this.userName = inUserName;
-		if (newUser && getPersistenceDelegate().exists(this)) {
-			valid = false;
-			context = "already exists";
+		valid = true;
+	}
+	
+	private User(String inUserName, String inPassword) {
+		this(inUserName);
+		if (isNotValid()) {
 			return;
 		}
-		this.password = encryptPassword(inPassword);
+		this.password = User.encryptPassword(inPassword);
 		if (this.password == null) {
 			valid = false;
 			context = "unable to encrypt password";
-			return;
-		}
-		if (newUser) {
-			createAccount();
-		} else {
-			findAccount();
-		}		
-	}
-
-	private void createAccount() {
-		if (getPersistenceDelegate().persist(this)) {
-			valid = true;
-		} else {
-			valid = false;
-			context = "unable to persist user";
 		}
 	}
-
-	private void findAccount() {
-		Persistable persistable = getPersistenceDelegate().findOne(this);
+	
+	public static User find(String inUserName, String inPassword) {
+		User user = new User(inUserName, inPassword);
+		if (user.isNotValid()) {
+			return user;
+		}
+		Persistable persistable = getPersistenceDelegate().findOne(user);
 		if (persistable == null) {
-			valid = false;
-			context = "invalid user name or password";
-		} else {
-			valid = true;
+			user.valid = false;
+			user.context = "invalid user name or password";
+			return user;
 		}
+		user = (User)persistable;
+		user.valid = true;
+		return user;
+	}
+
+	public static User create(String inUserName, String inPassword) {
+		User user = new User(inUserName);
+		if (user.isNotValid()) {
+			return user;
+		}
+		if (getPersistenceDelegate().exists(user)) {
+			user.valid = false;
+			user.context = "already exists";
+			return user;
+		}
+		user = new User(inUserName, inPassword);
+		if (user.isNotValid()) {
+			return user;
+		}
+		if (getPersistenceDelegate().persist(user)) {
+			user.valid = true;
+		} else {
+			user.valid = false;
+			user.context = "unable to persist user";
+		}
+		return user;
 	}
 
 	/**
 	 * @param password 
 	 * @return encrypted password or null if process failed
 	 */
-	private String encryptPassword(String password) {
+	private static String encryptPassword(String password) {
 		String encryptedPassword = getEncrypting().encrypt(password);
 		if (encryptedPassword == null) {
 			Notification.newNotification(
-					this, "User.encryptPassword()" , "failed", 
+					null, "User.encryptPassword()" , "failed", 
 					"", Type.DOMAIN, Severity.ERROR);					
 		}
 		return encryptedPassword;
@@ -130,8 +141,8 @@ public class User implements Persistable {
 	public String getContext() {return context;}
 
 	public String toString() {
-		return String.format("[%s] id:%d userName:%s valid:%s context:%s version:%d",
-				"User", id, userName, valid, context, version);
+		return String.format("[%s] id:%d userName:%s valid:%s context:%s version:%d bookCount:%d",
+				"User", id, userName, valid, context, version, books.size());
 	}
 
 	public static User getTestUser() {
