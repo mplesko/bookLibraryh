@@ -6,7 +6,6 @@ import java.util.List;
 
 import javax.faces.model.SelectItem;
 
-import com.logansrings.booklibrary.domain.Author;
 import com.logansrings.booklibrary.domain.Book;
 import com.logansrings.booklibrary.domain.ObjectFactory;
 import com.logansrings.booklibrary.util.SelectItemLabelComparator;

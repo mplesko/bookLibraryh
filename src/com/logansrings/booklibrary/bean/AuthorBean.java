@@ -29,7 +29,6 @@ public class AuthorBean {
 	}
 
 	public String addAuthor() {
-		//		Author author = new Author(firstName, lastName);
 		new Author(firstName, lastName);
 		clear();
 		return null;
@@ -76,7 +75,6 @@ public class AuthorBean {
 		List<SelectItem> selectAuthors = new ArrayList<SelectItem>();
 		for (AuthorBean authorBean : getAuthors()) {
 			selectAuthors.add(new SelectItem(authorBean.id, authorBean.getAuthorLastNameFirstName()));
-			//			selectAuthors.add(new SelectItem(authorBean.getAuthorName(), authorBean.getAuthorName()));
 		}
 		return selectAuthors;
 	}

@@ -1,7 +1,6 @@
 package com.logansrings.booklibrary.domain;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.*;
@@ -141,8 +140,15 @@ public class User implements Persistable {
 	public String getContext() {return context;}
 
 	public String toString() {
-		return String.format("[%s] id:%d userName:%s valid:%s context:%s version:%d bookCount:%d",
-				"User", id, userName, valid, context, version, books.size());
+		StringBuilder returnValue = new StringBuilder();
+		returnValue.append(
+				String.format("[%s] id:%d userName:%s valid:%s context:%s version:%d bookCount:%d",
+				"User", id, userName, valid, context, version, books.size()));
+		for (Book book : this.books) {
+			returnValue.append("\n");
+			returnValue.append(book.toString());
+		}
+		return returnValue.toString();
 	}
 
 	public static User getTestUser() {

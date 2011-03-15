@@ -3,13 +3,7 @@ package com.logansrings.booklibrary.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-import javax.persistence.Version;
+import javax.persistence.*;
 
 import org.hibernate.annotations.GenericGenerator;
 import com.logansrings.booklibrary.app.ApplicationContext;
@@ -41,10 +35,7 @@ public class Author implements Persistable {
 	@Transient
 	private static final String UNINITIALIZED = "must have firstName and lastName";
 	
-	Author() {
-		valid = false;
-		context = UNINITIALIZED;
-	}
+	Author() {}
 	
 	public Author(String firstName, String lastName) {
 		this.firstName = firstName;
@@ -73,6 +64,7 @@ public class Author implements Persistable {
 			valid = true;
 			firstName = ((Author)persistable).getFirstName();
 			lastName = ((Author)persistable).getLastName();
+			version = ((Author)persistable).getVersion();
 		}
 	}
 

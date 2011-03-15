@@ -149,7 +149,8 @@ public class HibernateDelegate implements PersistenceDelegate {
 						this, "HibernateDelegate.findOne()", 
 						persistable.toString() + " failed", 
 						"result size = " + list.size(), 
-						Type.TECHNICAL, Severity.ERROR);   
+						Type.TECHNICAL, Severity.INFO);
+				return list.get(0);
 			}			
 		} catch (HibernateException e) {
 			Notification.newNotification(

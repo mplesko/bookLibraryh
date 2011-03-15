@@ -16,31 +16,31 @@ public class UserBean {
      private User loggedInUser;
 
      public String createAccount() {
-           if (incomplete()) {
-                 ApplicationUtilities.createFacesError("loginForm",
-                             "User Name and Password are required", "");
-                 return "failure";
-           }
+    	 if (incomplete()) {
+    		 ApplicationUtilities.createFacesError("loginForm",
+    				 "User Name and Password are required", "");
+    		 return "failure";
+    	 }
 
-           try {
-                 User user = User.create(userName, password);
-                 if (validUser(user)) {
-                       loggedInUser = user;
-                       return "success";
-                 } else {
-                       ApplicationUtilities.createFacesError("loginForm",
-                                   "Unable to create account:",
-user.getContext());
-                       return "failure";
-                 }
+    	 try {
+    		 User user = User.create(userName, password);
+    		 if (validUser(user)) {
+    			 loggedInUser = user;
+    			 return "success";
+    		 } else {
+    			 ApplicationUtilities.createFacesError("loginForm",
+    					 "Unable to create account:",
+    					 user.getContext());
+    			 return "failure";
+    		 }
 
-           } catch (Exception e) {
-                 Notification.newNotification(this, "UserBean.createAccount()",
-                             "failed", "", Type.TECHNICAL, Severity.ERROR, e);
-                 ApplicationUtilities.createFacesError("loginForm",
-                             "Technical error prevented user creation", "");
-                 return "failure";
-           }
+    	 } catch (Exception e) {
+    		 Notification.newNotification(this, "UserBean.createAccount()",
+    				 "failed", "", Type.TECHNICAL, Severity.ERROR, e);
+    		 ApplicationUtilities.createFacesError("loginForm",
+    				 "Technical error prevented user creation", "");
+    		 return "failure";
+    	 }
      }
 
      public String login() {

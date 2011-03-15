@@ -13,7 +13,7 @@ import com.logansrings.booklibrary.domain.Library;
 import com.logansrings.booklibrary.domain.ObjectFactory;
 
 /**
- * Backs the main.jsp page
+ * Main controller for the user and user's books - the "library"
  * @author mark
  */
 public class MainBean {
