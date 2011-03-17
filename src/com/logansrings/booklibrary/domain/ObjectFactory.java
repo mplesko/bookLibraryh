@@ -1,6 +1,7 @@
 package com.logansrings.booklibrary.domain;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import com.logansrings.booklibrary.bean.AuthorBean;
@@ -9,11 +10,11 @@ import com.logansrings.booklibrary.webservice.dto.AuthorDto;
 
 public class ObjectFactory {
 
-	public static List<BookBean> createBookBeans(Library library) {
-		return createBookBeans(library.getBooks());
-	}
+//	public static List<BookBean> createBookBeans(Collection<Book> books) {
+//		return createBookBeans(books);
+//	}
 
-	public static List<BookBean> createBookBeans(List<Book> books) {
+	public static List<BookBean> createBookBeans(Collection<Book> books) {
 		List<BookBean> bookBeans = new ArrayList<BookBean>();
 		for (Book book : books) {
 			bookBeans.add(createBookBean(book));
@@ -27,29 +28,28 @@ public class ObjectFactory {
 	}
 
 	public static BookBean createBookBean(Long bookId) {
-		return createBookBean(createBook(bookId));
+		return createBookBean(findBook(bookId));
 	}
 
-	public static Book createBook(Long bookId) {
-		return new Book(bookId);
+	public static Book findBook(Long bookId) {
+		return Book.find(bookId);
 	}
 
-	public static List<Book> createBooks(List<BookBean> bookBeans) {
+	public static List<Book> getBooks(List<BookBean> bookBeans) {
 		List<Book> books = new ArrayList<Book>();
 		for (BookBean bookBean : bookBeans) {
-			books.add(createBook(bookBean));
+			books.add(getBook(bookBean));
 		}
 		return books;
 	}
 
-	public static Book createBook(BookBean bookBean) {
-		return new Book(bookBean.getTitle(), 
-				new Author(bookBean.getAuthorFirstName(), 
-						bookBean.getAuthorLastName()));
+	public static Book getBook(BookBean bookBean) {
+		return Book.find(bookBean.getTitle(), 
+				Author.find(bookBean.getAuthorId()));
 	}
 
 	public static Book createBook(String title, Long authorId) {
-		return new Book(title, new Author(authorId));
+		return Book.create(title, Author.find(authorId));
 	}
 
 	public static List<AuthorBean> createAuthorBeans(List<Author> authors) {

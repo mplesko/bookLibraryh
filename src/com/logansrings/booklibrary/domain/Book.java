@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -37,7 +38,7 @@ public class Book implements Persistable{
 	@Column(name = "title")
 	private String title = "";
 	
-	@ManyToOne(cascade = {CascadeType.PERSIST})
+	@ManyToOne(cascade = {CascadeType.ALL}, fetch=FetchType.EAGER)
     @JoinColumn(name="authorid")
 	private Author author;
 	
@@ -56,55 +57,71 @@ public class Book implements Persistable{
 
 	Book() {}
 	
-	public Book(String title, Author author) {
+	private Book(Long bookId) {
+		this.id = bookId;
+		valid = true;
+	}
+
+	private Book(String title, Author author) {
 		this.title = title;
 		this.author = author;		
 		if (ApplicationUtilities.isEmpty(title)) {
 			valid = false;
 			context = "must have title";
 		} else {
-			findByTitle();
-			if (isNotValid()) {
-				persistBook();
+			if (author == null) {
+				valid = false;
+				context = "must have author";
+			} else {
+				valid = true;
 			}
 		}
 	}
 
-	public Book(Long bookId) {
-		this.id = bookId;
-		findById();
-		author = new Author(authorId);
-	}
-
-	private void findById() {
-		Persistable persistable = getPersistenceDelegate().findOne(this);
+	public static Book find(String title, Author author) {
+		Book book = new Book(title, author);
+		if (book.isNotValid()) {
+			return book;
+		}
+		Persistable persistable = getPersistenceDelegate().findOne(book);
 		if (persistable == null) {
-			title = "N/A";
-			valid = false;
-		} else {
-			valid = true;
-			title = ((Book)persistable).getTitle();
-			authorId = ((Book)persistable).getAuthorId();
+			book.valid = false;
+			return book;
 		}
+		book = (Book)persistable;
+		book.valid = true;
+		return book;
 	}
 
-	private void findByTitle() {
-		Persistable persistable = getPersistenceDelegate().findOne(this);
+	public static Book find(Long bookId) {
+		Book book = new Book(bookId);
+		Persistable persistable = getPersistenceDelegate().findById(book);
 		if (persistable == null) {
-			valid = false;
-		} else {
-			valid = true;
-			id = persistable.getId();
+			book.valid = false;
+			return book;
 		}
+		book = (Book)persistable;
+		book.valid = true;
+		return book;
 	}
 
-	public void persistBook() {
-		if (getPersistenceDelegate().persist(this)) {
-			// ok, expected
-		} else {
-			valid = false;
-			context = "unable to persist book";
+	public static Book create(String title, Author author) {
+		Book book = new Book(title, author);
+		if (book.isNotValid()) {
+			return book;
 		}
+		if (getPersistenceDelegate().exists(book)) {
+			book.valid = false;
+			book.context = "already exists";
+			return book;
+		}
+		if (getPersistenceDelegate().persist(book)) {
+			book.valid = true;
+		} else {
+			book.valid = false;
+			book.context = "unable to persist book";
+		}
+		return book;
 	}
 	
 	public String getToString() {

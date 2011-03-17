@@ -15,7 +15,7 @@ public class BookBean {
 	private String title;
 	private AuthorBean authorBean;
 	private boolean markedForDeletion;
-	private boolean markedForAddition;
+//	private boolean markedForAddition;
 
 	public BookBean() {
 		this("", "", "");
@@ -23,7 +23,7 @@ public class BookBean {
 
 	public BookBean(String title, String authorFirstName, String authorLastName) {
 		this(null, title, null, authorFirstName, authorLastName);
-		markedForAddition = true;
+//		markedForAddition = true;
 	}
 
 	public BookBean(
@@ -60,13 +60,13 @@ public class BookBean {
 		this.markedForDeletion = markedForDeletion;
 	}
 
-	public boolean isMarkedForAddition() {
-		return markedForAddition;
-	}
-
-	public void setMarkedForAddition(boolean markedForAddition) {
-		this.markedForAddition = markedForAddition;
-	}
+//	public boolean isMarkedForAddition() {
+//		return markedForAddition;
+//	}
+//
+//	public void setMarkedForAddition(boolean markedForAddition) {
+//		this.markedForAddition = markedForAddition;
+//	}
 
 	public List<BookBean> getBooks() {
 		return ObjectFactory.createBookBeans(Book.getAll());
@@ -92,7 +92,6 @@ public class BookBean {
 		return authorBean.getAuthorId();
 	}
 
-
 	public List<SelectItem> getSortedSelectBooks() {
 		List<SelectItem> selectBooks = getSelectBooks();
 		Collections.sort(selectBooks, new SelectItemLabelComparator());
@@ -106,5 +105,7 @@ public class BookBean {
 		return selectBooks;
 	}
 
-
+	public Long getId() {
+		return id;
+	}
 }

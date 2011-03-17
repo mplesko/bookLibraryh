@@ -1,6 +1,13 @@
 package com.logansrings.booklibrary.bean;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
+
 import com.logansrings.booklibrary.app.ApplicationUtilities;
+import com.logansrings.booklibrary.domain.Book;
+import com.logansrings.booklibrary.domain.Library;
+import com.logansrings.booklibrary.domain.ObjectFactory;
 import com.logansrings.booklibrary.domain.User;
 import com.logansrings.booklibrary.notification.Notification;
 import com.logansrings.booklibrary.notification.Severity;
@@ -105,5 +112,15 @@ e);
            return loggedInUser == null;
      }
 
+	public Collection<Book> getBooks() {
+		return loggedInUser.getBooks();
+	}
 
+	public void addBook(Long addBookId) {
+		loggedInUser.addBook(addBookId);		
+	}
+
+	public void deleteBooks(List<Long> bookIdsToDelete) {
+		loggedInUser.deleteBooks(bookIdsToDelete);
+	}
 }				

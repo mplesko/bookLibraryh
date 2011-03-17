@@ -37,54 +37,66 @@ public class Author implements Persistable {
 	
 	Author() {}
 	
-	public Author(String firstName, String lastName) {
+	private Author(Long authorId) {
+		this.id = authorId;
+		valid = true;
+	}
+
+	private Author(String firstName, String lastName) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		if (ApplicationUtilities.isEmpty(firstName, lastName)) {
 			valid = false;
 			context = UNINITIALIZED;
 		} else {
-			findByName();
-			if (isNotValid()) {
-				persistAuthor();
-			}
+			valid = true;
 		}
 	}
 	
-	public Author(Long authorId) {
-		this.id = authorId;
-		findById();
+	public static Author find(Long authorId) {
+		Author author = new Author(authorId);
+		Persistable persistable = getPersistenceDelegate().findById(author);
+		if (persistable == null) {
+			author.valid = false;
+			return author; 
+		}
+		author = (Author)persistable;
+		author.valid = true;
+		return author;
 	}
 
-	private void findById() {
-		Persistable persistable = getPersistenceDelegate().findById(this);
-		if (persistable == null) {
-			valid = false;
-		} else {
-			valid = true;
-			firstName = ((Author)persistable).getFirstName();
-			lastName = ((Author)persistable).getLastName();
-			version = ((Author)persistable).getVersion();
+	public static Author find(String firstName, String lastName) {
+		Author author = new Author(firstName, lastName);
+		if (author.isNotValid()) {
+			return author;
 		}
-	}
-
-	private void findByName() {
-		Persistable persistable = getPersistenceDelegate().findOne(this);
+		Persistable persistable = getPersistenceDelegate().findOne(author);
 		if (persistable == null) {
-			valid = false;
-		} else {
-			valid = true;
-			id = persistable.getId();
+			author.valid = false;
+			return author;
 		}
+		author = (Author)persistable;
+		author.valid = true;
+		return author;
 	}
 	
-	public void persistAuthor() {
-		if (getPersistenceDelegate().persist(this)) {
-			// ok, expected
-		} else {
-			valid = false;
-			context = "unable to persist author";
+	public static Author create(String firstName, String lastName) {
+		Author author = new Author(firstName, lastName);
+		if (author.isNotValid()) {
+			return author;
 		}
+		if (getPersistenceDelegate().exists(author)) {
+			author.valid = false;
+			author.context = "already exists";
+			return author;
+		}
+		if (getPersistenceDelegate().persist(author)) {
+			author.valid = true;
+		} else {
+			author.valid = false;
+			author.context = "unable to persist author";
+		}
+		return author;
 	}
 	
 	public String toString() {

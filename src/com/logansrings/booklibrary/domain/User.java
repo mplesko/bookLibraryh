@@ -1,6 +1,7 @@
 package com.logansrings.booklibrary.domain;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.*;
@@ -196,4 +197,24 @@ public class User implements Persistable {
 		hash = 31 * hash + (null == userName ? 0 : userName.hashCode());
 		return hash;
 	}
+	public void addBook(Long bookId) {
+		Book book = Book.find(bookId);
+		books.add(book);
+		getPersistenceDelegate().persist(this);		
+	}
+
+	public void deleteBooks(List<Long> bookIdsToDelete) {
+		for (Long bookId : bookIdsToDelete) {
+			deleteBook(bookId);
+		}
+		getPersistenceDelegate().persist(this);		
+	}
+	private void deleteBook(Long bookId) {
+		Book book = Book.find(bookId);
+		if (books.contains(book)) {
+			books.remove(book);
+		}
+		getPersistenceDelegate().persist(this);
+	}
+
 }

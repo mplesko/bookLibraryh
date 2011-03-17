@@ -8,6 +8,10 @@ import com.logansrings.booklibrary.app.ApplicationUtilities;
 import com.logansrings.booklibrary.persistence.Persistable;
 import com.logansrings.booklibrary.persistence.PersistenceDelegate;
 
+/**
+ * @author mark
+ * @deprecated
+ */
 public class Library {
 
 	private User user;
@@ -31,7 +35,7 @@ public class Library {
 		} else {
 			for (Persistable persistable : findList) {
 				Long bookId = persistable.getId();
-				books.add(new Book(bookId));
+				books.add(Book.find(bookId));
 			}
 		}
 	}

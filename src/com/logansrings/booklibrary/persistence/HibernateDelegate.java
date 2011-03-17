@@ -74,7 +74,7 @@ public class HibernateDelegate implements PersistenceDelegate {
 		Session session = getSession();
 		try {
 			session.beginTransaction();
-			session.save(persistable);
+			session.saveOrUpdate(persistable);
 			session.getTransaction().commit();
 			Notification.newNotification(
 					this, "HibernateDelegate.persist()", 

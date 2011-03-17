@@ -1,5 +1,9 @@
 package com.logansrings.booklibrary.domain;
 
+/**
+ * @author mark
+ * @deprecated
+ */
 public class BookInfo {
 	String title;
 	String authorFirstName;

@@ -48,7 +48,7 @@
 				<br />
 				<h:panelGrid id="mainButtons" columns="2">
 					<h:commandButton id="deleteBooksButton" value="#{msgs.deletebooks}"
-						action="#{mainbean.deleteBooks}"
+						action="#{mainbean.deleteBooksFromLibrary}"
 						rendered="#{mainbean.haveBooksToDelete}" />
 					<h:commandButton value="#{msgs.addBookToLibrary}"
 						action="addbooktolibrary" />

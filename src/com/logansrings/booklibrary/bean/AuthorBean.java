@@ -29,7 +29,7 @@ public class AuthorBean {
 	}
 
 	public String addAuthor() {
-		new Author(firstName, lastName);
+		Author.create(firstName, lastName);
 		clear();
 		return null;
 	}
@@ -63,7 +63,7 @@ public class AuthorBean {
 	}
 
 	public Author getAuthor() {
-		return new Author(id);
+		return Author.find(id);
 	}
 
 	public List<SelectItem> getSortedSelectAuthors() {
