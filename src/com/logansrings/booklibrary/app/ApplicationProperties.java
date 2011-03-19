@@ -1,6 +1,5 @@
 package com.logansrings.booklibrary.app;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Enumeration;
@@ -22,17 +21,17 @@ public class ApplicationProperties {
 		return (String)getProperties().get("persistenceDelegate");
 	}
 
-	public static String getDatabaseURL() {
-		return (String)getProperties().get("databaseURL");
-	}
-	
-	public static String getDatabaseLogin() {
-		return (String)getProperties().get("databaseLogin");
-	}
-	
-	public static String getDatabasePassword() {
-		return (String)getProperties().get("databasePassword");
-	}
+//	public static String getDatabaseURL() {
+//		return (String)getProperties().get("databaseURL");
+//	}
+//	
+//	public static String getDatabaseLogin() {
+//		return (String)getProperties().get("databaseLogin");
+//	}
+//	
+//	public static String getDatabasePassword() {
+//		return (String)getProperties().get("databasePassword");
+//	}
 	
 	public static String[] getEventObserverClassNames() {
 		if (getEventObservers() == null) {

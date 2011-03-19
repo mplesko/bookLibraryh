@@ -47,4 +47,11 @@ public class DummyDelegate implements PersistenceDelegate {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public boolean persist(Persistable persistable,
+			Persistable associatedPersistable) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

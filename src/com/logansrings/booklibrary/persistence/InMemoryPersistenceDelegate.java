@@ -203,4 +203,12 @@ public class InMemoryPersistenceDelegate implements PersistenceDelegate {
 		}
 	}
 
+
+	@Override
+	public boolean persist(Persistable persistable,
+			Persistable associatedPersistable) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

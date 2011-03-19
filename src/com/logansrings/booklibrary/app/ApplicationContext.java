@@ -3,9 +3,6 @@ package com.logansrings.booklibrary.app;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 
-import com.logansrings.booklibrary.event.Event;
-import com.logansrings.booklibrary.event.EventObserver;
-import com.logansrings.booklibrary.event.Severity;
 import com.logansrings.booklibrary.notification.Notification;
 import com.logansrings.booklibrary.notification.NotificationObserver;
 import com.logansrings.booklibrary.persistence.PersistenceDelegate;

@@ -91,16 +91,15 @@ public class HibernateDelegate implements PersistenceDelegate {
 		}
 	}
 
-	public boolean persistComplex(Persistable persistable) {
+	public boolean persist(Persistable persistable, Persistable associatedPersistable) {
 		Session session = getSession();
 		try {
 			session.beginTransaction();
 			if (persistable instanceof Book) {
-				Persistable complexObject = ((Book)persistable).getComplexObject();
 				Persistable foundObject = 
 					(Persistable)session.load(
-						complexObject.getClass(), complexObject.getId());
-				((Book)persistable).setComplexObject(foundObject);				
+							associatedPersistable.getClass(), associatedPersistable.getId());
+				((Book)persistable).setAssociatedPersistable(foundObject);				
 			}
 			session.saveOrUpdate(persistable);
 			Notification.newNotification(
@@ -121,14 +120,6 @@ public class HibernateDelegate implements PersistenceDelegate {
 	}
 
 	public Persistable findById(Persistable persistable) {
-//		if (persistable.getId() == null) {
-//			Notification.newNotification(
-//					this, "HibernateDelegate.findById()", 
-//					persistable.toString() + " failed", "id is null", 
-//					Type.TECHNICAL, Severity.ERROR);   
-//			return null;
-//		}
-		
 		Session session = getSession();
 		try {
 			session.beginTransaction();

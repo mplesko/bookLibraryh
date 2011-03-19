@@ -126,7 +126,7 @@ public class Book implements Persistable{
 			return book;
 		}
 		book.authorId = authorId;
-		if (getPersistenceDelegate().persistComplex(book)) {
+		if (getPersistenceDelegate().persist(book, new Author(authorId))) {
 			book.valid = true;
 		} else {
 			book.valid = false;
@@ -235,12 +235,8 @@ public class Book implements Persistable{
 		return hash;
 	}
 
-	public Persistable getComplexObject() {
-		return new Author(authorId);		
-	}
-
-	public void setComplexObject(Persistable foundObject) {
-		author = (Author)foundObject;		
+	public void setAssociatedPersistable(Persistable associatedPersistable) {
+		author = (Author)associatedPersistable;		
 	}
 
 }
