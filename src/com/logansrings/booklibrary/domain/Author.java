@@ -37,7 +37,7 @@ public class Author implements Persistable {
 	
 	Author() {}
 	
-	private Author(Long authorId) {
+	Author(Long authorId) {
 		this.id = authorId;
 		valid = true;
 	}

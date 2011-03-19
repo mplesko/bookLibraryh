@@ -49,7 +49,8 @@ public class ObjectFactory {
 	}
 
 	public static Book createBook(String title, Long authorId) {
-		return Book.create(title, Author.find(authorId));
+//		return Book.create(title, Author.find(authorId));
+		return Book.create(title, authorId);
 	}
 
 	public static List<AuthorBean> createAuthorBeans(List<Author> authors) {

@@ -65,8 +65,7 @@ public class HibernateDelegate implements PersistenceDelegate {
 		Book book2 = Book.getTestBook("The Mythical Man Month", null);
 			
 		Book book3 = (Book) hibernateDelegate.findOne(book2);
-		System.out.println(book3.toString());
-		
+		System.out.println(book3.toString());		
 
 	}
 
@@ -80,6 +79,35 @@ public class HibernateDelegate implements PersistenceDelegate {
 					this, "HibernateDelegate.persist()", 
 					persistable.toString() + " successful", "", 
 					Type.DOMAIN, Severity.INFO);   
+			return true;
+
+		} catch (HibernateException e) {
+			session.close();
+			Notification.newNotification(
+					this, "HibernateDelegate.persist()", 
+					persistable.toString() + " failed", e.getMessage(), 
+					Type.TECHNICAL, Severity.ERROR, e);   
+			return false;
+		}
+	}
+
+	public boolean persistComplex(Persistable persistable) {
+		Session session = getSession();
+		try {
+			session.beginTransaction();
+			if (persistable instanceof Book) {
+				Persistable complexObject = ((Book)persistable).getComplexObject();
+				Persistable foundObject = 
+					(Persistable)session.load(
+						complexObject.getClass(), complexObject.getId());
+				((Book)persistable).setComplexObject(foundObject);				
+			}
+			session.saveOrUpdate(persistable);
+			Notification.newNotification(
+					this, "HibernateDelegate.persist()", 
+					persistable.toString() + " successful", "", 
+					Type.DOMAIN, Severity.INFO);   
+			session.getTransaction().commit();
 			return true;
 
 		} catch (HibernateException e) {

@@ -7,6 +7,7 @@ public interface PersistenceDelegate {
 	boolean exists(Persistable persistable);
 	
 	boolean persist(Persistable persistable);
+	boolean persistComplex(Persistable persistable);
 	
 	boolean delete(Persistable persistable);
 	

@@ -62,6 +62,16 @@ public class Book implements Persistable{
 		valid = true;
 	}
 
+	private Book(String title) {
+		this.title = title;
+		if (ApplicationUtilities.isEmpty(title)) {
+			valid = false;
+			context = "must have title";
+		}  else {
+			valid = true;
+		}
+	}
+
 	private Book(String title, Author author) {
 		this.title = title;
 		this.author = author;		
@@ -105,6 +115,26 @@ public class Book implements Persistable{
 		return book;
 	}
 
+	public static Book create(String title, Long authorId) {
+		Book book = new Book(title);
+		if (book.isNotValid()) {
+			return book;
+		}
+		if (getPersistenceDelegate().exists(book)) {
+			book.valid = false;
+			book.context = "already exists";
+			return book;
+		}
+		book.authorId = authorId;
+		if (getPersistenceDelegate().persistComplex(book)) {
+			book.valid = true;
+		} else {
+			book.valid = false;
+			book.context = "unable to persist book";
+		}
+		return book;
+	}
+	
 	public static Book create(String title, Author author) {
 		Book book = new Book(title, author);
 		if (book.isNotValid()) {
@@ -204,4 +234,13 @@ public class Book implements Persistable{
 		hash = 31 * hash + (null == author ? 0 : author.hashCode());
 		return hash;
 	}
+
+	public Persistable getComplexObject() {
+		return new Author(authorId);		
+	}
+
+	public void setComplexObject(Persistable foundObject) {
+		author = (Author)foundObject;		
+	}
+
 }
