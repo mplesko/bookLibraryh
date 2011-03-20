@@ -1,7 +1,5 @@
 package com.logansrings.booklibrary.persistence;
 
-import java.util.List;
-
 public interface Persistable {
 
 	Long getId();

@@ -91,16 +91,13 @@ public class HibernateDelegate implements PersistenceDelegate {
 		}
 	}
 
-	public boolean persist(Persistable persistable, Persistable associatedPersistable) {
+	public boolean persist(PersistableComplex persistable, Persistable associatedPersistable) {
 		Session session = getSession();
 		try {
 			session.beginTransaction();
-			if (persistable instanceof Book) {
-				Persistable foundObject = 
-					(Persistable)session.load(
-							associatedPersistable.getClass(), associatedPersistable.getId());
-				((Book)persistable).setAssociatedPersistable(foundObject);				
-			}
+			Persistable foundObject = (Persistable)session.load(
+						associatedPersistable.getClass(), associatedPersistable.getId());
+			persistable.setAssociatedPersistable(foundObject);				
 			session.saveOrUpdate(persistable);
 			Notification.newNotification(
 					this, "HibernateDelegate.persist()", 
@@ -108,7 +105,6 @@ public class HibernateDelegate implements PersistenceDelegate {
 					Type.DOMAIN, Severity.INFO);   
 			session.getTransaction().commit();
 			return true;
-
 		} catch (HibernateException e) {
 			session.close();
 			Notification.newNotification(

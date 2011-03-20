@@ -49,7 +49,7 @@ public class DummyDelegate implements PersistenceDelegate {
 	}
 
 	@Override
-	public boolean persist(Persistable persistable,
+	public boolean persist(PersistableComplex persistable,
 			Persistable associatedPersistable) {
 		// TODO Auto-generated method stub
 		return false;

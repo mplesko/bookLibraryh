@@ -21,11 +21,12 @@ import org.hibernate.annotations.GenericGenerator;
 import com.logansrings.booklibrary.app.ApplicationContext;
 import com.logansrings.booklibrary.app.ApplicationUtilities;
 import com.logansrings.booklibrary.persistence.Persistable;
+import com.logansrings.booklibrary.persistence.PersistableComplex;
 import com.logansrings.booklibrary.persistence.PersistenceDelegate;
 
 @Entity
 @Table( name = "book" )
-public class Book implements Persistable{
+public class Book implements PersistableComplex {
 	@Id
 	@Column(name = "id")
 	@GeneratedValue(generator="increment")
