@@ -16,12 +16,13 @@ import com.logansrings.booklibrary.notification.Notification;
 import com.logansrings.booklibrary.notification.Severity;
 import com.logansrings.booklibrary.notification.Type;
 import com.logansrings.booklibrary.persistence.Persistable;
+import com.logansrings.booklibrary.persistence.PersistableComplex;
 import com.logansrings.booklibrary.persistence.PersistenceDelegate;
 import com.logansrings.booklibrary.util.Encrypting;
 
 @Entity
 @Table( name = "user" )
-public class User implements Persistable {
+public class User implements PersistableComplex {
 	@Id
 	@Column(name = "id")
 	@GeneratedValue(generator="increment")
@@ -198,9 +199,8 @@ public class User implements Persistable {
 		return hash;
 	}
 	public void addBook(Long bookId) {
-		Book book = Book.find(bookId);
-		books.add(book);
-		getPersistenceDelegate().persist(this);		
+		Book book = new Book(bookId);
+		getPersistenceDelegate().persist(this, book);		
 	}
 
 	public void deleteBooks(List<Long> bookIdsToDelete) {
@@ -215,6 +215,10 @@ public class User implements Persistable {
 			books.remove(book);
 		}
 		getPersistenceDelegate().persist(this);
+	}
+	@Override
+	public void setAssociatedPersistable(Persistable persistable) {
+		books.add((Book) persistable);		
 	}
 
 }

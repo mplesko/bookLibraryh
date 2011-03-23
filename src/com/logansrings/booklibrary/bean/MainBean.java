@@ -1,6 +1,7 @@
 package com.logansrings.booklibrary.bean;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.el.ELContext;
@@ -15,7 +16,6 @@ import com.logansrings.booklibrary.domain.ObjectFactory;
  */
 public class MainBean {
 	private UserBean userBean;
-//	private Library library;
 	private List<BookBean> bookBeans;
 	private Long addBookId;
 
@@ -35,7 +35,6 @@ public class MainBean {
 	private void initialize() {
 		initializeUserBean();
 		initializeBookBeans();
-//		initializeLibrary();
 	}
 
 	private void initializeUserBean() {
@@ -45,23 +44,11 @@ public class MainBean {
 		userBean = (UserBean)elResolver.getValue(elContext, null, "userbean");
 	}
 
-//	private void initializeLibrary() {
-////		library = new Library(userBean.getUser());
-//		initializeBookBeans();
-//	}
-
 	private void initializeBookBeans() {
 		bookBeans = ObjectFactory.createBookBeans(userBean.getBooks());
 	}
 	
-//	private List<BookBean> createBookBeans(Library library) {
-//		return ObjectFactory.createBookBeans(library);
-//	}
-
 	public List<BookBean> getBookBeans() {
-//		if (library == null) {
-//			initialize();
-//		}
 		return bookBeans;
 	}
 	
@@ -81,10 +68,6 @@ public class MainBean {
 		initializeBookBeans();
 		return null;
 	}
-
-//	private List<Book> getBooks(List<BookBean> bookBeans) {
-//		return ObjectFactory.getBooks(bookBeans);
-//	}
 
 	public String addBookToLibrary() {
 		System.out.println("MainBean.addBookToLibrary()");
@@ -112,28 +95,17 @@ public class MainBean {
 		return false;
 	}
 
-//	private boolean haveBooksToAdd() {
-//		for (BookBean bookBean : bookBeans) {
-//			if (bookBean.isMarkedForAddition()) {
-//				return true;
-//			}
-//		}
-//		return false;
-//	}
-
 	public String logout() {
 		clear();
 		userBean.logout();
 		return "logout";
 	}
 	
-	private void clear() {
-//		library = null;
-		bookBeans = null;		
+	private void clear() {		
+		bookBeans  = Collections.emptyList();		
 	}
 	
 	public String doAction() {
 		return null;
-	}
-	
+	}	
 }

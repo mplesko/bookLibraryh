@@ -1,6 +1,7 @@
 import java.util.List;
 
 import com.logansrings.booklibrary.persistence.Persistable;
+import com.logansrings.booklibrary.persistence.PersistableComplex;
 import com.logansrings.booklibrary.persistence.PersistenceDelegate;
 
 
@@ -53,7 +54,7 @@ public class PersistenceMock implements PersistenceDelegate {
 	}
 
 	@Override
-	public boolean persist(Persistable persistable,
+	public boolean persist(PersistableComplex persistable,
 			Persistable associatedPersistable) {
 		// TODO Auto-generated method stub
 		return false;

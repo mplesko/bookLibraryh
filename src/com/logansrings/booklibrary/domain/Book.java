@@ -58,7 +58,7 @@ public class Book implements PersistableComplex {
 
 	Book() {}
 	
-	private Book(Long bookId) {
+	Book(Long bookId) {
 		this.id = bookId;
 		valid = true;
 	}
