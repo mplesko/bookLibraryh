@@ -108,4 +108,10 @@ public class BookBean {
 	public Long getId() {
 		return id;
 	}
+
+	public String edit() {
+		System.out.println("BookBean.edit()");
+		return "success";
+	}
+	
 }

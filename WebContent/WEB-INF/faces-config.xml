@@ -15,13 +15,14 @@
 		<managed-bean-class>com.logansrings.booklibrary.bean.UserBean</managed-bean-class>
 		<managed-bean-scope>session</managed-bean-scope>
 	</managed-bean>
-
+  
+<!--
 	<managed-bean>
 		<managed-bean-name>mainbean</managed-bean-name>
 		<managed-bean-class>com.logansrings.booklibrary.bean.MainBean</managed-bean-class>
 		<managed-bean-scope>session</managed-bean-scope>
 	</managed-bean>
-
+-->
 	<managed-bean>
 		<managed-bean-name>authorbean</managed-bean-name>
 		<managed-bean-class>com.logansrings.booklibrary.bean.AuthorBean</managed-bean-class>

@@ -51,6 +51,8 @@ public class User implements PersistableComplex {
 	private String context = "";
 	@Transient
 	private static Encrypting encrypting = null;
+	@Transient
+	private String persistMode = "";
 
 	public static void main(String[] args) throws ServletException {
 //		System.out.println(User.getTestUser().toString());
@@ -199,26 +201,28 @@ public class User implements PersistableComplex {
 		return hash;
 	}
 	public void addBook(Long bookId) {
+		persistMode = "add";
 		Book book = new Book(bookId);
 		getPersistenceDelegate().persist(this, book);		
 	}
 
 	public void deleteBooks(List<Long> bookIdsToDelete) {
+		persistMode = "delete";
 		for (Long bookId : bookIdsToDelete) {
-			deleteBook(bookId);
+			Book book = new Book(bookId);
+			getPersistenceDelegate().persist(this, book);		
 		}
-		getPersistenceDelegate().persist(this);		
 	}
-	private void deleteBook(Long bookId) {
-		Book book = Book.find(bookId);
-		if (books.contains(book)) {
-			books.remove(book);
-		}
-		getPersistenceDelegate().persist(this);
-	}
+
 	@Override
 	public void setAssociatedPersistable(Persistable persistable) {
-		books.add((Book) persistable);		
+		if ("add".equals(persistMode)) {
+			books.add((Book) persistable);
+		} else if ("delete".equals(persistMode)) {
+			if (books.contains((Book)persistable)) {
+				books.remove(persistable);
+			}
+		}
 	}
 
 }

@@ -19,12 +19,12 @@
 
 				<h:panelGrid columns="2">
 					<h:outputText value="#{msgs.book}"/>
-					<h:selectOneMenu value="#{mainbean.addBookId}" id="addBookId">
+					<h:selectOneMenu value="#{userbean.addBookId}" id="addBookId">
 						<f:selectItems value="#{bookbean.sortedSelectBooks}" />
 					</h:selectOneMenu>
 					<h:outputText />
 					<h:commandButton value="#{msgs.addBook}"
-						action="#{mainbean.addBookToLibrary}" />
+						action="#{userbean.addBookToLibrary}" />
 				</h:panelGrid>
 			</rich:panel>
 		</h:form>

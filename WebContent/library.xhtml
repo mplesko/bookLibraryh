@@ -20,7 +20,7 @@
 				<h:message for="mylibraryform" errorClass="error" showSummary="true" />
 				<br />
 				<rich:datascroller align="left" for="librarytable" maxPages="10" />
-				<rich:dataTable id="librarytable" value="#{mainbean.bookBeans}" var="book"
+				<rich:dataTable id="librarytable" value="#{userbean.bookBeans}" var="book"
 					headerClass="dataTableHeader" styleClass="dataTable"
 					rowClasses="dataTableOddRow,dataTableEvenRow"
 					cellspacing="5" cellpadding="5" rows="10"  sortMode="single">
@@ -36,7 +36,7 @@
 						<f:facet name="header">
 							<h:outputText value="#{msgs.title}" />
 						</f:facet>
-						<h:commandLink value="#{book.title}" action="#{mainbean.edit}" />
+						<h:commandLink value="#{book.title}" action="#{book.edit}" />
 					</rich:column>
 					<rich:column id="author">
 						<f:facet name="header">
@@ -48,8 +48,8 @@
 				<br />
 				<h:panelGrid id="mainButtons" columns="2">
 					<h:commandButton id="deleteBooksButton" value="#{msgs.deletebooks}"
-						action="#{mainbean.deleteBooksFromLibrary}"
-						rendered="#{mainbean.haveBooksToDelete}" />
+						action="#{userbean.deleteBooks}"
+						rendered="#{userbean.haveBooksToDelete}" />
 					<h:commandButton value="#{msgs.addBookToLibrary}"
 						action="addbooktolibrary" />
 				</h:panelGrid>

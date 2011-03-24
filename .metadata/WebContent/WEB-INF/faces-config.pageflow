@@ -3,27 +3,27 @@
   <nodes xsi:type="pageflow:PFPage" name="login" x="122" y="178" id="pf12654371318083" referenceLink="//@navigationRule.1/@navigationCase.0/@toViewId|" path="/login.jsp"/>
   <nodes xsi:type="pageflow:PFPage" name="main" x="122" y="562" id="pf12654371318085" referenceLink="//@navigationRule.3/@navigationCase.0/@toViewId|" path="/main.jsp"/>
   <nodes xsi:type="pageflow:PFPage" name="addbook" x="122" y="946" id="pf12679270663582" referenceLink="//@navigationRule.3/@fromViewId|" path="/addbook.jsp"/>
-  <nodes xsi:type="pageflow:PFPage" name="*" x="122" y="1330" id="pf12758423116144" referenceLink="//@navigationRule.1/@fromViewId|" outlinks="pf12758423116145 pf12852933590711 pf12852933590712 pf12852933590713 pf12852933590714 pf12852933590715 pf12857267592441 pf12957531076403" path="*"/>
-  <nodes xsi:type="pageflow:PFPage" name="login.xhtml" x="338" y="562" id="pf12758423116146" referenceLink="//@navigationRule.0/@navigationCase.1/@toViewId|" outlinks="pf12957532465379 pf129575324653710" inlinks="pf12758423116145 pf129575324653710" path="/login.xhtml"/>
-  <nodes xsi:type="pageflow:PFPage" name="authorlist.xhtml" x="338" y="946" id="pf12852933590716" referenceLink="//@navigationRule.1/@navigationCase.2/@toViewId|" inlinks="pf12852933590711" path="/authorlist.xhtml"/>
-  <nodes xsi:type="pageflow:PFPage" name="library.xhtml" x="338" y="1330" id="pf12852933590727" referenceLink="//@navigationRule.4/@navigationCase.0/@toViewId|" outlinks="pf129575324653711" inlinks="pf12852933590712 pf12957532465379 pf129575324653712 pf129575324653713" path="/library.xhtml"/>
-  <nodes xsi:type="pageflow:PFPage" name="booklist.xhtml" x="338" y="1714" id="pf12852933590728" referenceLink="//@navigationRule.1/@navigationCase.4/@toViewId|" inlinks="pf12852933590713" path="/booklist.xhtml"/>
-  <nodes xsi:type="pageflow:PFPage" name="addauthors.xhtml" x="338" y="2098" id="pf12852933590729" referenceLink="//@navigationRule.1/@navigationCase.5/@toViewId|" inlinks="pf12852933590714" path="/addauthors.xhtml"/>
-  <nodes xsi:type="pageflow:PFPage" name="addbooks.xhtml" x="338" y="2482" id="pf128529335907210" referenceLink="//@navigationRule.1/@navigationCase.6/@toViewId|" inlinks="pf12852933590715" path="/addbooks.xhtml"/>
-  <nodes xsi:type="pageflow:PFPage" name="addbooktolibrary.xhtml" id="pf12857267592452" referenceLink="//@navigationRule.4/@fromViewId|" outlinks="pf129575324653713" inlinks="pf12857267592441 pf129575324653711" path="/addbooktolibrary.xhtml"/>
-  <nodes xsi:type="pageflow:PFPage" name="main.xhtml" id="pf12957531076406" referenceLink="//@navigationRule.1/@navigationCase.0/@toViewId|" inlinks="pf12957531076403" path="/main.xhtml"/>
-  <nodes xsi:type="pageflow:PFPage" name="addbook.xhtml" id="pf129575324653714" referenceLink="//@navigationRule.3/@fromViewId|" outlinks="pf129575324653712" path="/addbook.xhtml"/>
-  <links id="pf12758423116145" target="pf12758423116146" source="pf12758423116144"/>
-  <links id="pf12852933590711" target="pf12852933590716" source="pf12758423116144"/>
-  <links id="pf12852933590712" target="pf12852933590727" source="pf12758423116144"/>
-  <links id="pf12852933590713" target="pf12852933590728" source="pf12758423116144"/>
-  <links id="pf12852933590714" target="pf12852933590729" source="pf12758423116144"/>
-  <links id="pf12852933590715" target="pf128529335907210" source="pf12758423116144"/>
-  <links id="pf12857267592441" target="pf12857267592452" source="pf12758423116144"/>
-  <links id="pf12957531076403" target="pf12957531076406" source="pf12758423116144"/>
-  <links id="pf12957532465379" target="pf12852933590727" source="pf12758423116146"/>
-  <links id="pf129575324653710" target="pf12758423116146" source="pf12758423116146"/>
-  <links id="pf129575324653711" target="pf12857267592452" source="pf12852933590727"/>
-  <links id="pf129575324653712" target="pf12852933590727" source="pf129575324653714"/>
-  <links id="pf129575324653713" target="pf12852933590727" source="pf12857267592452"/>
+  <nodes xsi:type="pageflow:PFPage" name="login.xhtml" id="pf13008420652760" referenceLink="//@navigationRule.1/@navigationCase.1/@toViewId|" outlinks="pf13008420652771 pf13008420652772" inlinks="pf13008420652772 pf13008420652773" path="/login.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="library.xhtml" id="pf13008420652774" referenceLink="//@navigationRule.4/@navigationCase.0/@toViewId|" outlinks="pf13008420652775" inlinks="pf13008420652771 pf13008420652776 pf13008420652777 pf13008420652778" path="/library.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="*" id="pf13008420652779" referenceLink="//@navigationRule.1/@fromViewId|" outlinks="pf130084206527710 pf13008420652773 pf130084206527711 pf13008420652776 pf130084206527712 pf130084206527713 pf130084206527714 pf130084206527715" path="*"/>
+  <nodes xsi:type="pageflow:PFPage" name="main.xhtml" id="pf130084206527716" referenceLink="//@navigationRule.1/@navigationCase.0/@toViewId|" inlinks="pf130084206527710" path="/main.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="authorlist.xhtml" id="pf130084206527717" referenceLink="//@navigationRule.1/@navigationCase.2/@toViewId|" inlinks="pf130084206527711" path="/authorlist.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="booklist.xhtml" id="pf130084206527818" referenceLink="//@navigationRule.1/@navigationCase.4/@toViewId|" inlinks="pf130084206527712" path="/booklist.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="addauthors.xhtml" id="pf130084206527819" referenceLink="//@navigationRule.1/@navigationCase.5/@toViewId|" inlinks="pf130084206527713" path="/addauthors.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="addbooks.xhtml" id="pf130084206527820" referenceLink="//@navigationRule.1/@navigationCase.6/@toViewId|" inlinks="pf130084206527714" path="/addbooks.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="addbooktolibrary.xhtml" id="pf130084206527821" referenceLink="//@navigationRule.4/@fromViewId|" outlinks="pf13008420652778" inlinks="pf130084206527715 pf13008420652775" path="/addbooktolibrary.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="addbook.xhtml" id="pf130084206527822" referenceLink="//@navigationRule.3/@fromViewId|" outlinks="pf13008420652777" path="/addbook.xhtml"/>
+  <links id="pf13008420652771" target="pf13008420652774" source="pf13008420652760" outcome="success"/>
+  <links id="pf13008420652772" target="pf13008420652760" source="pf13008420652760" outcome="failure"/>
+  <links id="pf130084206527710" target="pf130084206527716" source="pf13008420652779" outcome="logout"/>
+  <links id="pf13008420652773" target="pf13008420652760" source="pf13008420652779" outcome="login" redirect="true"/>
+  <links id="pf130084206527711" target="pf130084206527717" source="pf13008420652779" outcome="authorlist" redirect="true"/>
+  <links id="pf13008420652776" target="pf13008420652774" source="pf13008420652779" outcome="library" redirect="true"/>
+  <links id="pf130084206527712" target="pf130084206527818" source="pf13008420652779" outcome="booklist" redirect="true"/>
+  <links id="pf130084206527713" target="pf130084206527819" source="pf13008420652779" outcome="addauthors" redirect="true"/>
+  <links id="pf130084206527714" target="pf130084206527820" source="pf13008420652779" outcome="addbooks" redirect="true"/>
+  <links id="pf130084206527715" target="pf130084206527821" source="pf13008420652779" outcome="addbooktolibrary" redirect="true"/>
+  <links id="pf13008420652775" target="pf130084206527821" source="pf13008420652774" outcome="addBooks"/>
+  <links id="pf13008420652777" target="pf13008420652774" source="pf130084206527822" outcome="success"/>
+  <links id="pf13008420652778" target="pf13008420652774" source="pf130084206527821" outcome="success"/>
 </pageflow:Pageflow>

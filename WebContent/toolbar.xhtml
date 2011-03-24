@@ -10,7 +10,7 @@
 <rich:toolBar id="toolBar" height="40" itemSeparator="line" styleClass="toolBar">
 	<rich:toolBarGroup>
 		<h:commandLink id="#{msgs.login}" value="#{msgs.login}" action="login" rendered="#{userbean.notLoggedIn}"/>
-		<h:commandLink value="#{msgs.logout}" action="#{mainbean.logout}" rendered="#{userbean.loggedIn}"/>
+		<h:commandLink value="#{msgs.logout}" action="#{userbean.logout}" rendered="#{userbean.loggedIn}"/>
 	</rich:toolBarGroup>
 	<rich:toolBarGroup>
 		<h:commandLink value="#{msgs.myLibrary}" action="library" rendered="#{userbean.loggedIn}"/>
