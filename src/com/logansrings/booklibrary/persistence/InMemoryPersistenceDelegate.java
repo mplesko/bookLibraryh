@@ -11,6 +11,7 @@ import com.logansrings.booklibrary.domain.Author;
  */
 public class InMemoryPersistenceDelegate implements PersistenceDelegate {
 	private List<Persistable> inMemoryObjects =	new ArrayList<Persistable>();
+	Long id = 1L;
 
 	public static void main(String [] args) {
 		InMemoryPersistenceDelegate inMemoryPersistenceDelegate =
@@ -28,6 +29,11 @@ public class InMemoryPersistenceDelegate implements PersistenceDelegate {
 	}
 
 	public boolean persist(Persistable persistable) {
+		if (inMemoryObjects.contains(persistable)) {
+			inMemoryObjects.remove(persistable);
+		} else {
+			persistable.setId(id++);
+		}		
 		inMemoryObjects.add(persistable);
 		return true;
 	}
